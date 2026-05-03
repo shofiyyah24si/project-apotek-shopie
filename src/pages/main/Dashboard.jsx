@@ -1,64 +1,60 @@
-import { FaShoppingCart, FaTruck, FaBan, FaDollarSign } from "react-icons/fa";
+import { FaPills, FaUserInjured, FaCheckCircle, FaMoneyBillWave } from "react-icons/fa";
 import PageHeader from "../../components/PageHeader";
-import RecentOrders from "../../components/RecentOrders"; // IMPROVISASI
+import RecentTransactions from "../../components/RecentTransactions";
 
 export default function Dashboard() {
   return (
     <div id="dashboard-container">
-      <PageHeader />
+      <PageHeader title="Dashboard" breadcrumb={["Home", "Dashboard"]} />
 
-      {/* Grid Card Count */}
+      {/* Stat Cards */}
       <div id="dashboard-grid" className="p-5 grid grid-cols-2 xl:grid-cols-4 gap-4">
 
-        {/* Orders */}
-        <div id="dashboard-orders" className="flex items-center space-x-5 bg-white rounded-lg shadow-md p-4">
-          <div id="orders-icon" className="bg-hijau rounded-full p-4">
-            <FaShoppingCart className="text-3xl text-white" />
+        <div className="flex items-center space-x-4 bg-white rounded-xl shadow-sm p-4">
+          <div className="bg-teal-500 rounded-full p-4">
+            <FaPills className="text-2xl text-white" />
           </div>
-          <div id="orders-info" className="flex flex-col">
-            <span id="orders-count" className="text-2xl font-bold">75</span>
-            <span id="orders-text" className="text-gray-400">Total Orders</span>
-          </div>
-        </div>
-
-        {/* Delivered */}
-        <div id="dashboard-delivered" className="flex items-center space-x-5 bg-white rounded-lg shadow-md p-4">
-          <div id="delivered-icon" className="bg-blue-500 rounded-full p-4">
-            <FaTruck className="text-3xl text-white" />
-          </div>
-          <div id="delivered-info" className="flex flex-col">
-            <span id="delivered-count" className="text-2xl font-bold">175</span>
-            <span id="delivered-text" className="text-gray-400">Total Delivered</span>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">128</span>
+            <span className="text-gray-400 text-sm">Total Obat</span>
           </div>
         </div>
 
-        {/* Canceled */}
-        <div id="dashboard-canceled" className="flex items-center space-x-5 bg-white rounded-lg shadow-md p-4">
-          <div id="canceled-icon" className="bg-red-500 rounded-full p-4">
-            <FaBan className="text-3xl text-white" />
+        <div className="flex items-center space-x-4 bg-white rounded-xl shadow-sm p-4">
+          <div className="bg-blue-500 rounded-full p-4">
+            <FaUserInjured className="text-2xl text-white" />
           </div>
-          <div id="canceled-info" className="flex flex-col">
-            <span id="canceled-count" className="text-2xl font-bold">40</span>
-            <span id="canceled-text" className="text-gray-400">Total Canceled</span>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">340</span>
+            <span className="text-gray-400 text-sm">Total Pasien</span>
           </div>
         </div>
 
-        {/* Revenue */}
-        <div id="dashboard-revenue" className="flex items-center space-x-5 bg-white rounded-lg shadow-md p-4">
-          <div id="revenue-icon" className="bg-yellow-400 rounded-full p-4">
-            <FaDollarSign className="text-3xl text-white" />
+        <div className="flex items-center space-x-4 bg-white rounded-xl shadow-sm p-4">
+          <div className="bg-green-500 rounded-full p-4">
+            <FaCheckCircle className="text-2xl text-white" />
           </div>
-          <div id="revenue-info" className="flex flex-col">
-            <span id="revenue-amount" className="text-2xl font-bold">Rp.128</span>
-            <span id="revenue-text" className="text-gray-400">Total Revenue</span>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">215</span>
+            <span className="text-gray-400 text-sm">Transaksi Selesai</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-4 bg-white rounded-xl shadow-sm p-4">
+          <div className="bg-yellow-400 rounded-full p-4">
+            <FaMoneyBillWave className="text-2xl text-white" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-2xl font-bold">Rp 12,4jt</span>
+            <span className="text-gray-400 text-sm">Total Pendapatan</span>
           </div>
         </div>
 
       </div>
 
-      {/* IMPROVISASI: Tabel recent orders di bawah card count */}
+      {/* Tabel Transaksi Terbaru */}
       <div className="px-5">
-        <RecentOrders />
+        <RecentTransactions />
       </div>
 
     </div>

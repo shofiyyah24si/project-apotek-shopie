@@ -1,23 +1,27 @@
 import { Outlet } from "react-router-dom";
+import { MdMedicalServices } from "react-icons/md";
 
 export default function AuthLayout() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-teal-50">
             <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-                <div className="flex items-center justify-center mb-6">
-                    <h1 className="text-4xl font-poppins font-extrabold text-gray-800">
-                        <span className="text-black">Sedap</span>
-                        <span className="text-green-500">.</span>
+                <div className="flex items-center justify-center gap-2 mb-6">
+                    <div className="bg-teal-600 p-2 rounded-xl">
+                        <MdMedicalServices className="text-white text-2xl" />
+                    </div>
+                    <h1 className="text-3xl font-poppins font-extrabold text-gray-800">
+                        <span className="text-teal-600">Farma</span>
+                        <span className="text-gray-800">Care</span>
+                        <span className="text-teal-600">+</span>
                     </h1>
                 </div>
 
-                <Outlet/>
+                <Outlet />
 
-                <p className="text-center text-sm text-gray-500 mt-6">
-                    © 2025 Sedap Restaurant Admin Dashboard. All rights
-                    reserved.
+                <p className="text-center text-xs text-gray-400 mt-6">
+                    &copy; 2026 FarmaCare+ Sistem Manajemen Apotek. All rights reserved.
                 </p>
             </div>
         </div>
-    )
+    );
 }

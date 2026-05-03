@@ -1,0 +1,12 @@
+[
+  { "id": "MED-001", "name": "Paracetamol 500mg", "category": "Analgesik", "stock": 250, "price": 5000, "expiry": "2026-12-01" },
+  { "id": "MED-002", "name": "Amoxicillin 500mg", "category": "Antibiotik", "stock": 120, "price": 8500, "expiry": "2026-08-15" },
+  { "id": "MED-003", "name": "Omeprazole 20mg", "category": "Antasida", "stock": 80, "price": 12000, "expiry": "2027-03-10" },
+  { "id": "MED-004", "name": "Cetirizine 10mg", "category": "Antihistamin", "stock": 150, "price": 6000, "expiry": "2026-11-20" },
+  { "id": "MED-005", "name": "Metformin 500mg", "category": "Antidiabetik", "stock": 60, "price": 9000, "expiry": "2026-09-05" },
+  { "id": "MED-006", "name": "Amlodipine 5mg", "category": "Antihipertensi", "stock": 90, "price": 11000, "expiry": "2027-01-18" },
+  { "id": "MED-007", "name": "Ibuprofen 400mg", "category": "Analgesik", "stock": 200, "price": 7000, "expiry": "2026-10-30" },
+  { "id": "MED-008", "name": "Vitamin C 1000mg", "category": "Vitamin", "stock": 300, "price": 4500, "expiry": "2027-06-01" },
+  { "id": "MED-009", "name": "Antasida Doen", "category": "Antasida", "stock": 45, "price": 3500, "expiry": "2026-07-22" },
+  { "id": "MED-010", "name": "Salbutamol 4mg", "category": "Bronkodilator", "stock": 30, "price": 15000, "expiry": "2026-06-14" }
+]

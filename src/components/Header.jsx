@@ -1,5 +1,5 @@
-import { FcAreaChart } from "react-icons/fc";
 import { FaSearch, FaBell, FaBars } from "react-icons/fa";
+import { MdMedicalServices } from "react-icons/md";
 import { useState } from "react";
 import { SlSettings } from "react-icons/sl";
 import SearchModal from "./SearchModal";
@@ -25,7 +25,7 @@ export default function Header({ onToggleSidebar }) {
         <input
           id="search-input"
           type="text"
-          placeholder="Search Here..."
+          placeholder="Cari obat, pasien, transaksi..."
           readOnly
           className="border border-gray-100 p-2 pr-10 bg-white w-full max-w-lg rounded-md outline-none cursor-pointer"
         />
@@ -34,31 +34,28 @@ export default function Header({ onToggleSidebar }) {
 
       <div id="icons-container" className="flex items-center space-x-4">
 
-        <div id="notification-icon" className="relative p-3 bg-blue-100 rounded-2xl text-blue-500 cursor-pointer">
+        <div id="notification-icon" className="relative p-3 bg-teal-100 rounded-2xl text-teal-600 cursor-pointer">
           <FaBell />
-          <span id="notification-badge" className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-blue-200 rounded-full px-2 py-1 text-xs">
-            50
+          <span id="notification-badge" className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-teal-200 rounded-full px-2 py-1 text-xs">
+            5
           </span>
         </div>
 
-        <div id="chart-icon" className="p-3 bg-blue-100 rounded-2xl cursor-pointer">
-          <FcAreaChart />
+        <div id="medical-icon" className="p-3 bg-teal-100 rounded-2xl text-teal-600 cursor-pointer">
+          <MdMedicalServices />
         </div>
 
         <div id="settings-icon" className="p-3 bg-red-100 rounded-2xl text-red-500 cursor-pointer">
           <SlSettings />
         </div>
 
-        <div id="profile-container" className="flex items-center space-x-4 border-l pl-4 border-gray-300">
-          <span id="profile-text">
-            Hello, <b>shopieyaa</b>
+        <div id="profile-container" className="flex items-center space-x-3 border-l pl-4 border-gray-300">
+          <span id="profile-text" className="text-sm">
+            Halo, <b>Apoteker</b>
           </span>
-          <img
-            id="profile-avatar"
-            src="/img/gambar4.jpg"
-            className="w-10 h-10 rounded-full"
-            alt="profile"
-          />
+          <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-sm">
+            AP
+          </div>
         </div>
 
       </div>
