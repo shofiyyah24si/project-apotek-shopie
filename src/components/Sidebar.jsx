@@ -3,53 +3,56 @@ import { FaListUl, FaUserInjured, FaPills } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const menuClass = ({ isActive }) =>
-  `flex cursor-pointer items-center rounded-xl p-4 space-x-2
+  `flex cursor-pointer items-center rounded-xl px-4 py-3 gap-3 transition-all duration-200
   ${isActive
-    ? "text-teal-600 bg-teal-100 font-extrabold"
-    : "text-gray-600 hover:text-teal-600 hover:bg-teal-100 hover:font-extrabold"
+    ? "bg-teal-600 text-white font-semibold shadow-md"
+    : "text-gray-500 hover:bg-teal-50 hover:text-teal-600"
   }`;
 
 export default function Sidebar() {
   return (
-    <div id="sidebar" className="flex min-h-screen w-64 lg:w-72 flex-col bg-white p-6 shadow-lg">
+    <div id="sidebar" className="flex min-h-screen w-64 flex-col bg-white shadow-xl border-r border-gray-100">
 
       {/* Logo */}
-      <div id="sidebar-logo" className="flex flex-col mb-2">
-        <span id="logo-title" className="font-poppins-extrabold text-[36px] text-gray-900 leading-tight">
-          <span className="text-teal-600">Farma</span>
-          <span className="text-gray-800">Care</span>
-          <b className="text-teal-600">+</b>
-        </span>
-        <span id="logo-subtitle" className="font-semibold text-gray-400 text-sm">
-          Sistem Manajemen Apotek
-        </span>
+      <div className="px-6 py-6 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="bg-teal-600 p-2 rounded-xl shadow">
+            <MdMedicalServices className="text-white text-2xl" />
+          </div>
+          <div>
+            <p className="font-poppins-extrabold text-lg text-gray-800 leading-tight">
+              Apotek <span className="text-teal-600">ShopiCare</span>
+            </p>
+            <p className="text-xs text-gray-400">Sistem Manajemen Apotek</p>
+          </div>
+        </div>
       </div>
 
-      {/* List Menu */}
-      <div id="sidebar-menu" className="mt-8">
-        <p className="text-xs font-semibold text-gray-400 uppercase mb-3 px-4">Menu Utama</p>
-        <ul id="menu-list" className="space-y-1">
+      {/* Menu */}
+      <div className="flex-1 px-4 py-6">
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-2">Menu Utama</p>
+        <ul className="space-y-1">
           <li>
-            <NavLink id="menu-dashboard" to="/" className={menuClass}>
-              <MdDashboard className="mr-3 text-xl" />
+            <NavLink to="/" className={menuClass}>
+              <MdDashboard className="text-xl flex-shrink-0" />
               <span>Dashboard</span>
             </NavLink>
           </li>
           <li>
-            <NavLink id="menu-transactions" to="/transactions" className={menuClass}>
-              <FaListUl className="mr-3 text-xl" />
+            <NavLink to="/transactions" className={menuClass}>
+              <FaListUl className="text-lg flex-shrink-0" />
               <span>Transaksi</span>
             </NavLink>
           </li>
           <li>
-            <NavLink id="menu-medicines" to="/medicines" className={menuClass}>
-              <FaPills className="mr-3 text-xl" />
+            <NavLink to="/medicines" className={menuClass}>
+              <FaPills className="text-lg flex-shrink-0" />
               <span>Data Obat</span>
             </NavLink>
           </li>
           <li>
-            <NavLink id="menu-patients" to="/patients" className={menuClass}>
-              <FaUserInjured className="mr-3 text-xl" />
+            <NavLink to="/patients" className={menuClass}>
+              <FaUserInjured className="text-lg flex-shrink-0" />
               <span>Data Pasien</span>
             </NavLink>
           </li>
@@ -57,16 +60,12 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div id="sidebar-footer" className="mt-auto">
-        <div className="bg-teal-600 px-4 py-3 rounded-xl shadow mb-6 flex items-center gap-3">
-          <MdMedicalServices className="text-white text-3xl flex-shrink-0" />
-          <div className="text-white text-xs">
-            <p className="font-semibold">FarmaCare+</p>
-            <p className="opacity-80">Apotek Sehat Sejahtera</p>
-          </div>
+      <div className="px-4 py-5 border-t border-gray-100">
+        <div className="bg-teal-600 rounded-xl p-4 text-white mb-4">
+          <p className="font-semibold text-sm">Apotek ShopiCare</p>
+          <p className="text-xs opacity-75 mt-0.5">Sehat itu mudah bersama kami</p>
         </div>
-        <span className="font-bold text-gray-400 text-sm">FarmaCare+ Admin</span>
-        <p className="font-light text-gray-400 text-xs">&copy; 2026 All Rights Reserved</p>
+        <p className="text-xs text-gray-400 text-center">&copy; 2026 Apotek ShopiCare</p>
       </div>
 
     </div>

@@ -23,14 +23,17 @@ body {
     --font-poppins: "Poppins", sans-serif;
     --font-barlow: "Barlow", sans-serif;
     --font-poppins-extrabold: "PoppinsExtraBold", sans-serif;
-    --color-latar: #f3f4f6;
+    --color-latar: #f0fdf9;
     --color-teks: #374151; 
     --color-teks-samping: #6b7280;
     --color-garis: #e5e7eb; 
     --color-hijau: #00B074; 
     --color-merah: #ef4444; 
     --color-biru: #3b82f6;
-    --color-kuning: #f59e0b; 
+    --color-kuning: #f59e0b;
+    --color-primary: #0d9488;
+    --color-primary-dark: #0f766e;
+    --color-primary-light: #ccfbf1;
 }
 
 
