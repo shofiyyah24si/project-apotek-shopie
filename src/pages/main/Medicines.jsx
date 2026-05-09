@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import medicinesData from "../../data/medicines.json";
 
@@ -44,7 +45,11 @@ export default function Medicines() {
             {medicinesData.map((med) => (
               <tr key={med.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-5 py-3.5 font-medium text-gray-500 text-xs">{med.id}</td>
-                <td className="px-5 py-3.5 text-gray-800 font-medium">{med.name}</td>
+                <td className="px-5 py-3.5">
+                  <Link to={`/medicines/${med.id}`} className="text-teal-600 hover:text-teal-700 font-medium hover:underline">
+                    {med.name}
+                  </Link>
+                </td>
                 <td className="px-5 py-3.5">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${categoryColor[med.category] || "bg-gray-100 text-gray-600"}`}>
                     {med.category}

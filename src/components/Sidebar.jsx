@@ -11,7 +11,7 @@ const menuClass = ({ isActive }) =>
 
 export default function Sidebar() {
   return (
-    <div id="sidebar" className="flex min-h-screen w-64 flex-col bg-white shadow-xl border-r border-gray-100">
+    <div id="sidebar" className="flex h-full min-h-screen w-64 flex-col bg-white shadow-xl border-r border-gray-100 self-stretch">
 
       {/* Logo */}
       <div className="px-6 py-6 border-b border-gray-100">

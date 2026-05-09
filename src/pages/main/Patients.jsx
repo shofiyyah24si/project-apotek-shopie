@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
 import patientsData from "../../data/patients.json";
 
@@ -24,7 +25,9 @@ export default function Patients() {
                     <div className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
                       {p.name.charAt(0)}
                     </div>
-                    <span className="font-medium text-gray-800">{p.name}</span>
+                    <Link to={`/patients/${p.id}`} className="font-medium text-teal-600 hover:text-teal-700 hover:underline">
+                      {p.name}
+                    </Link>
                   </div>
                 </td>
                 <td className="px-5 py-3.5 text-gray-500">{p.email}</td>

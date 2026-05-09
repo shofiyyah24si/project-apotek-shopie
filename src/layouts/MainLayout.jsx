@@ -16,7 +16,7 @@ export default function MainLayout() {
         />
       )}
 
-      <div className={`fixed z-30 md:static transition-transform duration-300 
+      <div className={`fixed z-30 md:static transition-transform duration-300 self-stretch
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
         <Sidebar />
       </div>
