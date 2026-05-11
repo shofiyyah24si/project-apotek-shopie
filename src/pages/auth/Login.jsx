@@ -1,88 +1,131 @@
 import axios from "axios";
 import { useState } from "react";
-import { BsFillExclamationDiamondFill } from "react-icons/bs";
 import { ImSpinner2 } from "react-icons/im";
+import { LuCircleAlert } from "react-icons/lu";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [dataForm, setDataForm] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [dataForm, setDataForm] = useState({ email: "", password: "" });
 
-    const handleChange = (evt) => {
-        const { name, value } = evt.target;
-        setDataForm({ ...dataForm, [name]: value });
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDataForm({ ...dataForm, [name]: value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    axios
+      .post("https://dummyjson.com/user/login", {
+        username: dataForm.email,
+        password: dataForm.password,
+      })
+      .then((res) => {
+        if (res.status !== 200) { setError(res.data.message); return; }
+        navigate("/");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Username atau password salah");
+      })
+      .finally(() => setLoading(false));
+  };
 
-        axios
-            .post("https://dummyjson.com/user/login", {
-                username: dataForm.email,
-                password: dataForm.password,
-            })
-            .then((response) => {
-                if (response.status !== 200) {
-                    setError(response.data.message);
-                    return;
-                }
-                navigate("/");
-            })
-            .catch((err) => {
-                setError(err.response?.data?.message || "Username atau password salah");
-            })
-            .finally(() => setLoading(false));
-    };
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-[#1C1D22] mb-1"
+        style={{ fontFamily: "Poppins, sans-serif" }}>
+        Masuk
+      </h2>
+      <p className="text-sm text-gray-400 mb-7"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Silakan login untuk melanjutkan
+      </p>
 
-    return (
-        <div>
-            <h2 className="text-2xl font-poppins-extrabold text-gray-800 mb-1">Masuk</h2>
-            <p className="text-sm text-gray-400 mb-7">Silakan login untuk melanjutkan</p>
-
-            {error && (
-                <div className="bg-red-50 mb-5 p-3 text-sm text-red-600 rounded-xl flex items-center gap-2 border border-red-100">
-                    <BsFillExclamationDiamondFill />
-                    {error}
-                </div>
-            )}
-
-            {loading && (
-                <div className="bg-teal-50 mb-5 p-3 text-sm text-teal-600 rounded-xl flex items-center gap-2">
-                    <ImSpinner2 className="animate-spin" />
-                    Mohon tunggu...
-                </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Username</label>
-                    <input type="text" name="email" onChange={handleChange}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition"
-                        placeholder="Masukkan username" />
-                </div>
-                <div>
-                    <div className="flex justify-between mb-1.5">
-                        <label className="text-sm font-medium text-gray-700">Password</label>
-                        <Link to="/forgot" className="text-xs text-teal-600 hover:underline">Lupa password?</Link>
-                    </div>
-                    <input type="password" name="password" onChange={handleChange}
-                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition"
-                        placeholder="********" />
-                </div>
-                <button type="submit"
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2.5 rounded-xl transition duration-200 text-sm mt-2">
-                    Masuk
-                </button>
-            </form>
-
-            <p className="text-center text-sm text-gray-500 mt-6">
-                Belum punya akun?{" "}
-                <Link to="/register" className="text-teal-600 font-semibold hover:underline">Daftar sekarang</Link>
-            </p>
+      {/* Error */}
+      {error && (
+        <div className="bg-red-50 mb-5 p-3 text-sm text-[#CC5F5F] rounded-xl flex items-center gap-2 border border-red-100"
+          style={{ fontFamily: "Inter, sans-serif" }}>
+          <LuCircleAlert className="flex-shrink-0" />
+          {error}
         </div>
-    );
+      )}
+
+      {/* Loading */}
+      {loading && (
+        <div className="bg-[#eef1fe] mb-5 p-3 text-sm text-[#5570F1] rounded-xl flex items-center gap-2"
+          style={{ fontFamily: "Inter, sans-serif" }}>
+          <ImSpinner2 className="animate-spin flex-shrink-0" />
+          Mohon tunggu...
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Username */}
+        <div>
+          <label className="block text-sm font-medium text-[#1C1D22] mb-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}>
+            Username
+          </label>
+          <input
+            type="text" name="email"
+            onChange={handleChange}
+            placeholder="Masukkan username"
+            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <div className="flex justify-between mb-1.5">
+            <label className="text-sm font-medium text-[#1C1D22]"
+              style={{ fontFamily: "Inter, sans-serif" }}>
+              Password
+            </label>
+            <Link to="/forgot"
+              className="text-xs text-[#5570F1] hover:underline"
+              style={{ fontFamily: "Inter, sans-serif" }}>
+              Lupa password?
+            </Link>
+          </div>
+          <div className="relative">
+            <input
+              type={showPass ? "text" : "password"}
+              name="password"
+              onChange={handleChange}
+              placeholder="••••••••"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition pr-10"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            />
+            <button type="button"
+              onClick={() => setShowPass(v => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
+              style={{ fontFamily: "Inter, sans-serif" }}>
+              {showPass ? "Sembunyikan" : "Tampilkan"}
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" disabled={loading}
+          className="w-full bg-[#5570F1] hover:bg-[#4460e0] disabled:opacity-60 text-white font-semibold py-2.5 rounded-xl transition text-sm mt-2"
+          style={{ fontFamily: "Inter, sans-serif" }}>
+          {loading ? "Memproses..." : "Masuk"}
+        </button>
+      </form>
+
+      <p className="text-center text-sm text-gray-500 mt-6"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Belum punya akun?{" "}
+        <Link to="/register"
+          className="text-[#5570F1] font-semibold hover:underline">
+          Daftar sekarang
+        </Link>
+      </p>
+    </div>
+  );
 }

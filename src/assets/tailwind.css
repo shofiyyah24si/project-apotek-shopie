@@ -2,38 +2,69 @@
 
 @font-face {
     font-family: 'Barlow';
-    src: url('/fonts/Barlow-Regular.ttf') ;
+    src: url('/fonts/Barlow-Regular.ttf');
 }
 
 @font-face {
     font-family: 'Poppins';
-    src: url('/fonts/Poppins-Regular.ttf') ;
+    src: url('/fonts/Poppins-Regular.ttf');
+    font-weight: 400;
 }
 
 @font-face {
-    font-family: 'PoppinsExtraBold';
-    src: url('/fonts/Poppins-ExtraBold.ttf') ;
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-ExtraBold.ttf');
+    font-weight: 800;
 }
 
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter.ttf');
+}
+
+/* Default body font = Inter */
 body {
-    @apply font-barlow;
+    font-family: "Inter", sans-serif;
+    color: #1C1D22;
+    background-color: #f0f1f7;
 }
 
 @theme {
+    /* Fonts */
     --font-poppins: "Poppins", sans-serif;
-    --font-barlow: "Barlow", sans-serif;
-    --font-poppins-extrabold: "PoppinsExtraBold", sans-serif;
-    --color-latar: #f0fdf9;
-    --color-teks: #374151; 
-    --color-teks-samping: #6b7280;
-    --color-garis: #e5e7eb; 
-    --color-hijau: #00B074; 
-    --color-merah: #ef4444; 
-    --color-biru: #3b82f6;
-    --color-kuning: #f59e0b;
-    --color-primary: #0d9488;
-    --color-primary-dark: #0f766e;
-    --color-primary-light: #ccfbf1;
-}
+    --font-inter:   "Inter", sans-serif;
+    --font-barlow:  "Barlow", sans-serif;
 
+    /* Primary: #5570F1 scale */
+    --color-primary:     #5570F1;
+    --color-primary-90:  #6680f3;
+    --color-primary-80:  #7790f5;
+    --color-primary-60:  #99aaf8;
+    --color-primary-40:  #bbcafb;
+    --color-primary-20:  #dde4fd;
+    --color-primary-10:  #eef1fe;
+
+    /* Secondary: #FFCC91 scale */
+    --color-secondary:    #FFCC91;
+    --color-secondary-80: #ffd6a7;
+    --color-secondary-20: #fff5e8;
+
+    /* Neutral: #1C1D22 scale */
+    --color-neutral-100: #1C1D22;
+    --color-neutral-80:  #494a52;
+    --color-neutral-60:  #767781;
+    --color-neutral-40:  #a3a4ab;
+    --color-neutral-20:  #d1d1d5;
+    --color-neutral-10:  #e8e8ea;
+
+    /* Semantic */
+    --color-success: #519C66;
+    --color-error:   #CC5F5F;
+
+    /* Legacy aliases */
+    --color-teks:          #1C1D22;
+    --color-teks-samping:  #767781;
+    --color-garis:         #e8e8ea;
+    --color-biru:          #5570F1;
+}
 
