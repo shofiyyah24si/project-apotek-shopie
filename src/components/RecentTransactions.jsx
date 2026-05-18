@@ -1,10 +1,5 @@
 import transactionsData from "../data/transactions.json";
-
-const statusColor = {
-  Selesai: "bg-green-100 text-green-700",
-  Diproses: "bg-blue-100 text-blue-700",
-  Dibatalkan: "bg-red-100 text-red-700",
-};
+import TransactionBadge from "./apotek/TransactionBadge";
 
 export default function RecentTransactions() {
   const recent = transactionsData.slice(0, 5);
@@ -33,9 +28,7 @@ export default function RecentTransactions() {
                 <td className="py-3 text-gray-600">{trx.patientName}</td>
                 <td className="py-3 text-gray-500 text-xs">{trx.medicine}</td>
                 <td className="py-3">
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusColor[trx.status]}`}>
-                    {trx.status}
-                  </span>
+                  <TransactionBadge type={trx.status} />
                 </td>
                 <td className="py-3 font-semibold text-gray-700">Rp {trx.total.toLocaleString("id-ID")}</td>
               </tr>

@@ -109,7 +109,7 @@
     "dosage": "1x sehari 1 tablet bersama makanan",
     "sideEffects": "Gangguan pencernaan jika dosis berlebih, mual",
     "manufacturer": "Blackmores Limited, Australia",
-    "image": "/img/vit c.png"
+    "image": "/img/vitamin c.jpg"
   },
   {
     "id": "MED-009",
@@ -137,6 +137,6 @@
     "dosage": "3x sehari 1 tablet atau sesuai anjuran dokter",
     "sideEffects": "Jantung berdebar, tremor, sakit kepala",
     "manufacturer": "PT GlaxoSmithKline Indonesia",
-    "image": "/img/salbutamol.jpeg"
+    "image": "https://placehold.co/400x300/f0fdfa/0d9488?text=Salbutamol"
   }
 ]

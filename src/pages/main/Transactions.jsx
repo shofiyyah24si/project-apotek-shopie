@@ -9,6 +9,7 @@ import { MdShoppingCart } from "react-icons/md";
 import transactionsRaw from "../../data/transactions.json";
 import medicines from "../../data/medicines.json";
 import patients  from "../../data/patients.json";
+import TransactionBadge from "../../components/apotek/TransactionBadge";
 
 const PAGE_SIZES = [10, 20, 50];
 
@@ -17,18 +18,6 @@ const enriched = transactionsRaw.map((t, i) => ({
   jenis: i % 2 === 0 ? "Ambil Langsung" : "Antar ke Rumah",
   displayTotal: `Rp ${t.total.toLocaleString("id-ID")}`,
 }));
-
-const STATUS_STYLE = {
-  Selesai:    "bg-green-100 text-green-600",
-  Diproses:   "bg-red-100 text-red-400",
-  Dibatalkan: "bg-gray-100 text-gray-400",
-};
-
-const STATUS_LABEL = {
-  Selesai:    "Completed",
-  Diproses:   "Pending",
-  Dibatalkan: "Cancelled",
-};
 
 function WeekBadge() {
   return (
@@ -39,7 +28,6 @@ function WeekBadge() {
   );
 }
 
-/* ── Modal Tambah Transaksi ─────────────────────────────────── */
 function ModalTambahTransaksi({ onClose }) {
   const [form, setForm] = useState({
     patientId: "",
@@ -62,8 +50,6 @@ function ModalTambahTransaksi({ onClose }) {
       onClick={onClose}>
       <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl"
         onClick={e => e.stopPropagation()}>
-
-        {/* Header modal */}
         <div className="flex justify-between items-center mb-1">
           <h2 className="text-lg font-semibold text-[#1C1D22]"
             style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -76,26 +62,18 @@ function ModalTambahTransaksi({ onClose }) {
         <p className="text-xs text-gray-400 mb-5" style={{ fontFamily: "Inter, sans-serif" }}>
           Informasi Transaksi
         </p>
-
         <div className="space-y-3">
-          {/* Pilih Pasien */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block"
-              style={{ fontFamily: "Inter, sans-serif" }}>Pasien</label>
+            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Pasien</label>
             <select name="patientId" value={form.patientId} onChange={handleChange}
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
               style={{ fontFamily: "Inter, sans-serif" }}>
               <option value="">-- Pilih Pasien --</option>
-              {patients.map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
+              {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
           </div>
-
-          {/* Pilih Obat */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block"
-              style={{ fontFamily: "Inter, sans-serif" }}>Obat</label>
+            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Obat</label>
             <select name="medicineId" value={form.medicineId} onChange={handleChange}
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
               style={{ fontFamily: "Inter, sans-serif" }}>
@@ -107,21 +85,14 @@ function ModalTambahTransaksi({ onClose }) {
               ))}
             </select>
           </div>
-
-          {/* Qty */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block"
-              style={{ fontFamily: "Inter, sans-serif" }}>Jumlah</label>
-            <input type="number" name="qty" min={1}
-              value={form.qty} onChange={handleChange}
+            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Jumlah</label>
+            <input type="number" name="qty" min={1} value={form.qty} onChange={handleChange}
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
               style={{ fontFamily: "Inter, sans-serif" }} />
           </div>
-
-          {/* Jenis */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block"
-              style={{ fontFamily: "Inter, sans-serif" }}>Jenis Layanan</label>
+            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Jenis Layanan</label>
             <select name="jenis" value={form.jenis} onChange={handleChange}
               className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
               style={{ fontFamily: "Inter, sans-serif" }}>
@@ -129,22 +100,15 @@ function ModalTambahTransaksi({ onClose }) {
               <option>Antar ke Rumah</option>
             </select>
           </div>
-
-          {/* Total preview */}
           {total > 0 && (
             <div className="bg-[#eef1fe] rounded-xl px-4 py-3 flex justify-between items-center">
-              <span className="text-sm text-gray-500" style={{ fontFamily: "Inter, sans-serif" }}>
-                Total
-              </span>
-              <span className="text-sm font-bold text-[#5570F1]"
-                style={{ fontFamily: "Poppins, sans-serif" }}>
+              <span className="text-sm text-gray-500" style={{ fontFamily: "Inter, sans-serif" }}>Total</span>
+              <span className="text-sm font-bold text-[#5570F1]" style={{ fontFamily: "Poppins, sans-serif" }}>
                 Rp {total.toLocaleString("id-ID")}
               </span>
             </div>
           )}
         </div>
-
-        {/* Buttons */}
         <div className="flex gap-3 mt-5">
           <button onClick={onClose}
             className="flex-1 py-2.5 text-sm text-[#5570F1] border border-[#5570F1] rounded-xl hover:bg-[#eef1fe] transition"
@@ -163,10 +127,10 @@ function ModalTambahTransaksi({ onClose }) {
 }
 
 export default function Transactions() {
-  const [search, setSearch]     = useState("");
-  const [selected, setSelected] = useState([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [page, setPage]         = useState(1);
+  const [search, setSearch]       = useState("");
+  const [selected, setSelected]   = useState([]);
+  const [pageSize, setPageSize]   = useState(10);
+  const [page, setPage]           = useState(1);
   const [showModal, setShowModal] = useState(false);
 
   const filtered = useMemo(() => {
@@ -198,36 +162,28 @@ export default function Transactions() {
 
   return (
     <div>
-      {/* Title */}
       <div className="mb-4">
-        <h1 className="text-2xl font-bold text-[#1C1D22]"
-          style={{ fontFamily: "Poppins, sans-serif" }}>
+        <h1 className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
           Transaksi
         </h1>
-        <div className="flex items-center gap-1.5 mt-1 text-sm"
-          style={{ fontFamily: "Inter, sans-serif" }}>
+        <div className="flex items-center gap-1.5 mt-1 text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
           <HiOutlineHome className="text-base text-gray-400" />
           <span className="text-gray-400">/</span>
           <span className="text-[#5570F1] font-medium">Transaksi</span>
         </div>
       </div>
 
-      {/* Summary header */}
       <div className="flex justify-between items-center mb-3">
-        <h2 className="font-semibold text-[#1C1D22]"
-          style={{ fontFamily: "Poppins, sans-serif" }}>
+        <h2 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
           Ringkasan Transaksi
         </h2>
         <button className="flex items-center gap-2 bg-[#5570F1] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#4460e0] transition"
-          style={{ fontFamily: "Inter, sans-serif" }}
-          onClick={() => setShowModal(true)}>
+          style={{ fontFamily: "Inter, sans-serif" }} onClick={() => setShowModal(true)}>
           <FaPlus className="text-xs" /> Buat Transaksi Baru
         </button>
       </div>
 
-      {/* Summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-        {/* Card 1 */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
@@ -251,7 +207,6 @@ export default function Transactions() {
           </div>
         </div>
 
-        {/* Card 2 */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
@@ -263,8 +218,7 @@ export default function Transactions() {
             <div>
               <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Dibatalkan</p>
               <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                {dibatalkan}{" "}
-                <span className="text-[#CC5F5F] text-sm font-normal">-20%</span>
+                {dibatalkan} <span className="text-[#CC5F5F] text-sm font-normal">-20%</span>
               </p>
             </div>
             <div>
@@ -274,7 +228,6 @@ export default function Transactions() {
           </div>
         </div>
 
-        {/* Card 3 */}
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
@@ -293,19 +246,15 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* Tabel */}
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-        {/* Toolbar */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h3 className="font-semibold text-[#1C1D22]"
-            style={{ fontFamily: "Poppins, sans-serif" }}>
+          <h3 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
             Data Transaksi Pasien
           </h3>
           <div className="flex items-center gap-2">
             <div className="relative">
               <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-xs" />
-              <input value={search}
-                onChange={e => { setSearch(e.target.value); setPage(1); }}
+              <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }}
                 placeholder="Cari transaksi..."
                 className="pl-8 pr-3 py-1.5 border border-gray-200 rounded-lg text-sm outline-none w-40 focus:w-52 transition-all"
                 style={{ fontFamily: "Inter, sans-serif" }} />
@@ -366,10 +315,7 @@ export default function Transactions() {
                   <td className="px-4 py-3 font-medium text-[#1C1D22] whitespace-nowrap"
                     style={{ fontFamily: "Inter, sans-serif" }}>{t.displayTotal}</td>
                   <td className="px-4 py-3 whitespace-nowrap">
-                    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${STATUS_STYLE[t.status]}`}
-                      style={{ fontFamily: "Inter, sans-serif" }}>
-                      {STATUS_LABEL[t.status]}
-                    </span>
+                    <TransactionBadge type={t.status} />
                   </td>
                 </tr>
               ))}
@@ -377,7 +323,6 @@ export default function Transactions() {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100 text-sm text-gray-500">
           <div className="flex items-center gap-2" style={{ fontFamily: "Inter, sans-serif" }}>
             <select value={pageSize} onChange={e => { setPageSize(+e.target.value); setPage(1); }}
@@ -402,6 +347,7 @@ export default function Transactions() {
           </div>
         </div>
       </div>
+
       {showModal && <ModalTambahTransaksi onClose={() => setShowModal(false)} />}
     </div>
   );

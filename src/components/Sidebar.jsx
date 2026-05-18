@@ -8,6 +8,7 @@ import {
   LuUsers,
   LuClipboardList,
   LuHeadset,
+  LuBoxes,
 } from "react-icons/lu";
 import { FaGift } from "react-icons/fa";
 import { MdLogout, MdMedicalServices } from "react-icons/md";
@@ -34,10 +35,11 @@ function IconDashboard({ active }) {
 
 /* ── Menu items — struktur apotek lama ─────────────────────── */
 const menuItems = [
-  { key: "dashboard",  label: "Dashboard",  to: "/" },
-  { key: "transaksi",  label: "Transaksi",  to: "/transactions" },
-  { key: "obat",       label: "Data Obat",  to: "/medicines" },
-  { key: "pasien",     label: "Data Pasien",to: "/patients" },
+  { key: "dashboard",     label: "Dashboard",     to: "/" },
+  { key: "transaksi",     label: "Transaksi",     to: "/transactions" },
+  { key: "obat",          label: "Data Obat",     to: "/medicines" },
+  { key: "pasien",        label: "Data Pasien",   to: "/patients" },
+  { key: "ui-components", label: "UI Components", to: "/ui-components" },
 ];
 
 function MenuIcon({ itemKey, active }) {
@@ -46,7 +48,8 @@ function MenuIcon({ itemKey, active }) {
     case "dashboard": return <IconDashboard active={active} />;
     case "transaksi": return <LuClipboardList className={cls} />;
     case "obat":      return <LuPill className={cls} />;
-    case "pasien":    return <LuUsers className={cls} />;
+    case "pasien":        return <LuUsers className={cls} />;
+    case "ui-components": return <LuBoxes className={cls} />;
     default:          return null;
   }
 }
