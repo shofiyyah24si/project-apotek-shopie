@@ -3,7 +3,21 @@ import { FaArrowLeft, FaPhone, FaEnvelope } from "react-icons/fa";
 import { LuUsers, LuMapPin, LuCalendar, LuDroplets, LuCircleAlert, LuClipboard } from "react-icons/lu";
 import { HiOutlineHome } from "react-icons/hi2";
 import patientsData from "../../data/patients.json";
-import InfoCard from "../../components/apotek/InfoCard";
+
+function InfoCard({ label, value, icon, valueClass, className = "" }) {
+  return (
+    <div className={`bg-white rounded-2xl shadow-sm p-5 ${className}`}>
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        {icon} {label}
+      </p>
+      <p className={`text-sm ${valueClass || "text-[#1C1D22] font-medium"}`}
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        {value}
+      </p>
+    </div>
+  );
+}
 
 export default function PatientDetail() {
   const { id } = useParams();

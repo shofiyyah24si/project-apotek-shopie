@@ -16,7 +16,6 @@ import PriceDisplay    from "../../components/apotek/PriceDisplay";
 import InputField      from "../../components/apotek/InputField";
 import AppModal        from "../../components/apotek/AppModal";
 import SectionTitle    from "../../components/apotek/SectionTitle";
-import EmptyState      from "../../components/apotek/EmptyState";
 import MedicineTableRow from "../../components/apotek/MedicineTableRow";
 import FormActions     from "../../components/apotek/FormActions";
 
@@ -66,8 +65,10 @@ export default function Medicines() {
      
         <AppCard className="overflow-x-auto">
           {medicinesData.length === 0 ? (
-
-            <EmptyState icon={<FaPills />} message="Belum ada data obat" />
+            <div className="flex flex-col items-center justify-center py-16 text-gray-400">
+              <FaPills className="text-5xl mb-3 text-gray-300" />
+              <p className="text-sm" style={{ fontFamily: "Inter, sans-serif" }}>Belum ada data obat</p>
+            </div>
           ) : (
 
             <AppTable headers={TABLE_HEADERS}>
