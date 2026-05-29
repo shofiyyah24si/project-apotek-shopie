@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import {
   FaChevronDown, FaSearch, FaFilter, FaShareAlt,
-  FaPlus, FaChevronLeft, FaChevronRight, FaTimes,
+  FaPlus, FaChevronLeft, FaChevronRight,
 } from "react-icons/fa";
 import { HiOutlineHome } from "react-icons/hi2";
 import { LuClipboardList } from "react-icons/lu";
@@ -10,6 +10,37 @@ import transactionsRaw from "../../data/transactions.json";
 import medicines from "../../data/medicines.json";
 import patients  from "../../data/patients.json";
 import TransactionBadge from "../../components/apotek/TransactionBadge";
+import InputField from "../../components/apotek/InputField";
+
+// ── shadcn/ui: Table 
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
+
+// ── shadcn/ui: Dialog 
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+
+// ── shadcn/ui: Select 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PAGE_SIZES = [10, 20, 50];
 
@@ -28,78 +59,96 @@ function WeekBadge() {
   );
 }
 
-function ModalTambahTransaksi({ onClose }) {
+// ── Form Tambah Transaksi (pakai shadcn Dialog + Select) ─────
+function FormTambahTransaksi({ open, onOpenChange }) {
   const [form, setForm] = useState({
     patientId: "",
     medicineId: "",
     qty: 1,
     jenis: "Ambil Langsung",
-    status: "Diproses",
   });
 
   const selectedMed = medicines.find(m => m.id === form.medicineId);
   const total = selectedMed ? selectedMed.price * form.qty : 0;
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-  };
-
   return (
-    <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
-      onClick={onClose}>
-      <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl"
-        onClick={e => e.stopPropagation()}>
-        <div className="flex justify-between items-center mb-1">
-          <h2 className="text-lg font-semibold text-[#1C1D22]"
-            style={{ fontFamily: "Poppins, sans-serif" }}>
-            Buat Transaksi Baru
-          </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none">
-            <FaTimes />
-          </button>
-        </div>
-        <p className="text-xs text-gray-400 mb-5" style={{ fontFamily: "Inter, sans-serif" }}>
-          Informasi Transaksi
-        </p>
-        <div className="space-y-3">
+    // ── shadcn Dialog: controlled open state ──
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Buat Transaksi Baru</DialogTitle>
+          <DialogDescription>Pilih pasien, obat, dan jumlah pembelian.</DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+
+          {/* ── shadcn Select: pilih pasien ── */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Pasien</label>
-            <select name="patientId" value={form.patientId} onChange={handleChange}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
-              style={{ fontFamily: "Inter, sans-serif" }}>
-              <option value="">-- Pilih Pasien --</option>
-              {patients.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-            </select>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
+              Pasien
+            </label>
+            <Select value={form.patientId} onValueChange={v => setForm(f => ({ ...f, patientId: v }))}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="-- Pilih Pasien --" />
+              </SelectTrigger>
+              <SelectContent>
+                {patients.map(p => (
+                  <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+
+          {/* ── shadcn Select: pilih obat ── */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Obat</label>
-            <select name="medicineId" value={form.medicineId} onChange={handleChange}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
-              style={{ fontFamily: "Inter, sans-serif" }}>
-              <option value="">-- Pilih Obat --</option>
-              {medicines.map(m => (
-                <option key={m.id} value={m.id}>
-                  {m.name} — Rp {m.price.toLocaleString("id-ID")} (Stok: {m.stock})
-                </option>
-              ))}
-            </select>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
+              Obat
+            </label>
+            <Select value={form.medicineId} onValueChange={v => setForm(f => ({ ...f, medicineId: v }))}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="-- Pilih Obat --" />
+              </SelectTrigger>
+              <SelectContent>
+                {medicines.map(m => (
+                  <SelectItem key={m.id} value={m.id}>
+                    {m.name} — Rp {m.price.toLocaleString("id-ID")} (Stok: {m.stock})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+
+          {/* Jumlah — InputField biasa */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Jumlah</label>
-            <input type="number" name="qty" min={1} value={form.qty} onChange={handleChange}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
-              style={{ fontFamily: "Inter, sans-serif" }} />
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
+              Jumlah
+            </label>
+            <InputField
+              name="qty"
+              type="number"
+              placeholder="Jumlah"
+              value={form.qty}
+              onChange={e => setForm(f => ({ ...f, qty: e.target.value }))}
+            />
           </div>
+
+          {/* ── shadcn Select: jenis layanan ── */}
           <div>
-            <label className="text-xs text-gray-500 mb-1 block" style={{ fontFamily: "Inter, sans-serif" }}>Jenis Layanan</label>
-            <select name="jenis" value={form.jenis} onChange={handleChange}
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#5570F1] transition"
-              style={{ fontFamily: "Inter, sans-serif" }}>
-              <option>Ambil Langsung</option>
-              <option>Antar ke Rumah</option>
-            </select>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
+              Jenis Layanan
+            </label>
+            <Select value={form.jenis} onValueChange={v => setForm(f => ({ ...f, jenis: v }))}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Ambil Langsung">Ambil Langsung</SelectItem>
+                <SelectItem value="Antar ke Rumah">Antar ke Rumah</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
+
+          {/* Preview total */}
           {total > 0 && (
             <div className="bg-[#eef1fe] rounded-xl px-4 py-3 flex justify-between items-center">
               <span className="text-sm text-gray-500" style={{ fontFamily: "Inter, sans-serif" }}>Total</span>
@@ -109,20 +158,22 @@ function ModalTambahTransaksi({ onClose }) {
             </div>
           )}
         </div>
-        <div className="flex gap-3 mt-5">
-          <button onClick={onClose}
+
+        {/* ── shadcn DialogFooter: tombol aksi ── */}
+        <DialogFooter className="gap-2">
+          <button onClick={() => onOpenChange(false)}
             className="flex-1 py-2.5 text-sm text-[#5570F1] border border-[#5570F1] rounded-xl hover:bg-[#eef1fe] transition"
             style={{ fontFamily: "Inter, sans-serif" }}>
             Batal
           </button>
-          <button onClick={onClose}
+          <button onClick={() => onOpenChange(false)}
             className="flex-1 py-2.5 bg-[#5570F1] hover:bg-[#4460e0] text-white text-sm rounded-xl transition"
             style={{ fontFamily: "Inter, sans-serif" }}>
             Simpan
           </button>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -131,7 +182,7 @@ export default function Transactions() {
   const [selected, setSelected]   = useState([]);
   const [pageSize, setPageSize]   = useState(10);
   const [page, setPage]           = useState(1);
-  const [showModal, setShowModal] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const filtered = useMemo(() => {
     if (!search) return enriched;
@@ -177,12 +228,17 @@ export default function Transactions() {
         <h2 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
           Ringkasan Transaksi
         </h2>
-        <button className="flex items-center gap-2 bg-[#5570F1] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#4460e0] transition"
-          style={{ fontFamily: "Inter, sans-serif" }} onClick={() => setShowModal(true)}>
+        {/* ── Tombol trigger shadcn Dialog ── */}
+        <button
+          className="flex items-center gap-2 bg-[#5570F1] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#4460e0] transition"
+          style={{ fontFamily: "Inter, sans-serif" }}
+          onClick={() => setDialogOpen(true)}
+        >
           <FaPlus className="text-xs" /> Buat Transaksi Baru
         </button>
       </div>
 
+      {/* Summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
         <div className="bg-white rounded-2xl p-5 shadow-sm">
           <div className="flex justify-between items-start mb-4">
@@ -246,6 +302,7 @@ export default function Transactions() {
         </div>
       </div>
 
+      {/* ── shadcn Table: data transaksi ── */}
       <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <h3 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
@@ -267,62 +324,52 @@ export default function Transactions() {
               style={{ fontFamily: "Inter, sans-serif" }}>
               <FaShareAlt className="text-xs" /> Ekspor
             </button>
-            <button className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
-              style={{ fontFamily: "Inter, sans-serif" }}>
-              Aksi Massal <FaChevronDown className="text-xs" />
-            </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 text-gray-400 text-xs">
-                <th className="px-5 py-3 w-10">
-                  <input type="checkbox" checked={allChecked} onChange={toggleAll}
-                    className="w-4 h-4 rounded border-gray-300 accent-[#5570F1]" />
-                </th>
-                {["ID","Nama Pasien","Obat","Tanggal","Jenis","Qty","Total","Status"].map(h => (
-                  <th key={h} className="px-4 py-3 text-left font-medium whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>
-                    <span className="flex items-center gap-1">
-                      {h} <FaChevronDown className="text-[9px] text-gray-300" />
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.map(t => (
-                <tr key={t.id} className="border-b border-gray-50 hover:bg-gray-50 transition">
-                  <td className="px-5 py-3">
-                    <input type="checkbox" checked={selected.includes(t.id)}
-                      onChange={() => toggleOne(t.id)}
-                      className="w-4 h-4 rounded border-gray-300 accent-[#5570F1]" />
-                  </td>
-                  <td className="px-4 py-3 text-gray-400 text-xs whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.id}</td>
-                  <td className="px-4 py-3 font-medium text-[#1C1D22] whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.patientName}</td>
-                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.medicine}</td>
-                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.date}</td>
-                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.jenis}</td>
-                  <td className="px-4 py-3 text-gray-700 whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.qty}</td>
-                  <td className="px-4 py-3 font-medium text-[#1C1D22] whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif" }}>{t.displayTotal}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <TransactionBadge type={t.status} />
-                  </td>
-                </tr>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {/* Checkbox select all */}
+              <TableHead className="w-10 px-5">
+                <input type="checkbox" checked={allChecked} onChange={toggleAll}
+                  className="w-4 h-4 rounded border-gray-300 accent-[#5570F1]" />
+              </TableHead>
+              {["ID","Nama Pasien","Obat","Tanggal","Jenis","Qty","Total","Status"].map(h => (
+                <TableHead key={h} className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
+                  style={{ fontFamily: "Inter, sans-serif" }}>
+                  <span className="flex items-center gap-1">
+                    {h} <FaChevronDown className="text-[9px] text-gray-300" />
+                  </span>
+                </TableHead>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginated.map(t => (
+              <TableRow key={t.id}>
+                <TableCell className="px-5">
+                  <input type="checkbox" checked={selected.includes(t.id)}
+                    onChange={() => toggleOne(t.id)}
+                    className="w-4 h-4 rounded border-gray-300 accent-[#5570F1]" />
+                </TableCell>
+                <TableCell className="px-4 text-xs text-gray-400">{t.id}</TableCell>
+                <TableCell className="px-4 font-medium text-[#1C1D22]">{t.patientName}</TableCell>
+                <TableCell className="px-4 text-gray-500">{t.medicine}</TableCell>
+                <TableCell className="px-4 text-gray-500">{t.date}</TableCell>
+                <TableCell className="px-4 text-gray-500">{t.jenis}</TableCell>
+                <TableCell className="px-4 text-gray-700">{t.qty}</TableCell>
+                <TableCell className="px-4 font-medium text-[#1C1D22]">{t.displayTotal}</TableCell>
+                {/* TransactionBadge — status Selesai/Diproses/Dibatalkan */}
+                <TableCell className="px-4">
+                  <TransactionBadge type={t.status} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
 
+        {/* Pagination */}
         <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100 text-sm text-gray-500">
           <div className="flex items-center gap-2" style={{ fontFamily: "Inter, sans-serif" }}>
             <select value={pageSize} onChange={e => { setPageSize(+e.target.value); setPage(1); }}
@@ -348,7 +395,8 @@ export default function Transactions() {
         </div>
       </div>
 
-      {showModal && <ModalTambahTransaksi onClose={() => setShowModal(false)} />}
+      {/* ── shadcn Dialog form tambah transaksi ── */}
+      <FormTambahTransaksi open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );
 }

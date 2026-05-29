@@ -13,6 +13,7 @@ const Patients     = React.lazy(() => import("./pages/main/Patients"));
 const PatientDetail  = React.lazy(() => import("./pages/main/PatientDetail"));
 const NotFound     = React.lazy(() => import("./pages/main/NotFound"));
 const UIComponents = React.lazy(() => import("./pages/UIComponents"));
+const FiturXyz = React.lazy(() => import("./pages/main/FiturXyz"));
 
 
 const Login    = React.lazy(() => import("./pages/auth/Login"));
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/patients"       element={<Patients />} />
           <Route path="/patients/:id"   element={<PatientDetail />} />
           <Route path="/ui-components"  element={<UIComponents />} />
+          <Route path="/fiturxyz"       element={<FiturXyz />} />
           <Route path="*"               element={<NotFound />} />
 
         </Route>

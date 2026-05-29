@@ -1,11 +1,22 @@
 /**
  * AppButton — Basic Component
+ * Tombol reusable dengan berbagai variant warna.
+ * Meneruskan semua props ke <button> agar kompatibel dengan
+ * shadcn DialogTrigger asChild dan komponen lain yang inject props.
+ *
+ * Props:
+ *   - children  : isi teks tombol
+ *   - type      : "primary" | "secondary" | "danger" | "warning" | "ghost"
+ *   - onClick   : fungsi yang dijalankan saat diklik
+ *   - className : class tambahan
+ *   - ...rest   : props lain diteruskan ke <button> (misal dari DialogTrigger asChild)
  */
 export default function AppButton({
   children,
   type = "primary",
   onClick,
   className = "",
+  ...rest
 }) {
   const variants = {
     primary:   "bg-[#5570F1] hover:bg-[#4460e0] text-white",
@@ -20,6 +31,7 @@ export default function AppButton({
       onClick={onClick}
       className={`px-4 py-2 rounded-xl text-sm font-medium transition ${variants[type]} ${className}`}
       style={{ fontFamily: "Inter, sans-serif" }}
+      {...rest}
     >
       {children}
     </button>

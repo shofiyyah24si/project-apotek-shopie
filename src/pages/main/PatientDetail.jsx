@@ -1,8 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaPhone, FaEnvelope } from "react-icons/fa";
-import { LuUsers, LuMapPin, LuCalendar, LuDroplets, LuCircleAlert, LuClipboard } from "react-icons/lu";
+import { LuUsers, LuMapPin, LuCalendar, LuDroplets, LuCircleAlert, LuClipboard, LuShoppingCart, LuMessageSquare, LuShare2 } from "react-icons/lu";
 import { HiOutlineHome } from "react-icons/hi2";
 import patientsData from "../../data/patients.json";
+import MembershipBadge from "../../components/apotek/MembershipBadge";
+import PriceDisplay from "../../components/apotek/PriceDisplay";
 
 function InfoCard({ label, value, icon, valueClass, className = "" }) {
   return (
@@ -144,6 +146,75 @@ export default function PatientDetail() {
             {patient.notes}
           </p>
         </div>
+
+        {/* Riwayat Transaksi */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}>
+            <LuShoppingCart className="text-[#5570F1]" /> Riwayat Transaksi
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Level Membership */}
+            <div className="bg-gray-50 rounded-xl p-4">
+              <p className="text-xs text-gray-400 mb-2" style={{ fontFamily: "Inter, sans-serif" }}>Level Membership</p>
+              <MembershipBadge level={patient.levelMembership} />
+            </div>
+            {/* Total Transaksi */}
+            <div className="bg-gray-50 rounded-xl p-4">
+              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Total Transaksi</p>
+              <p className="text-xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                {patient.totalTransaksi}x
+              </p>
+            </div>
+            {/* Total Nominal */}
+            <div className="bg-gray-50 rounded-xl p-4">
+              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Total Nominal</p>
+              <p className="text-base font-bold text-[#5570F1]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                <PriceDisplay amount={patient.totalNominal} className="text-[#5570F1] font-bold" />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Interaksi & Komunikasi */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}>
+            <LuMessageSquare className="text-[#5570F1]" /> Interaksi & Komunikasi
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InfoCard label="Riwayat Komplain" value={patient.komplain}
+              valueClass={patient.komplain !== "Tidak ada" ? "text-orange-600 font-medium" : "text-gray-500"} />
+            <InfoCard label="Feedback / Review" value={patient.feedback} />
+            <InfoCard label="Referral Code" value={patient.referralCode}
+              valueClass="text-[#5570F1] font-semibold font-mono" />
+            <InfoCard label="Email Subscription"
+              value={patient.emailSubscription}
+              valueClass={patient.emailSubscription === "Subscribed" ? "text-green-600 font-semibold" : "text-gray-400"} />
+          </div>
+        </div>
+
+        {/* Informasi Akuisisi */}
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}>
+            <LuShare2 className="text-[#5570F1]" /> Informasi Akuisisi
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <InfoCard label="Sumber User" value={patient.sumberUser}
+              icon={<LuShare2 className="text-[#5570F1]" />} />
+            <InfoCard label="Status Membership"
+              value={patient.levelMembership}
+              icon={<span>🏆</span>}
+              valueClass={
+                patient.levelMembership === "Platinum" ? "text-purple-600 font-bold" :
+                patient.levelMembership === "Gold"     ? "text-yellow-600 font-bold" :
+                patient.levelMembership === "Silver"   ? "text-gray-500 font-bold"  :
+                "text-orange-600 font-bold"
+              } />
+          </div>
+        </div>
+
       </div>
     </div>
   );

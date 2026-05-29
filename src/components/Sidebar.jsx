@@ -12,6 +12,7 @@ import {
 } from "react-icons/lu";
 import { FaGift } from "react-icons/fa";
 import { MdLogout, MdMedicalServices } from "react-icons/md";
+import { LiaFile } from "react-icons/lia";
 
 /* ── Custom Dashboard icon (2x2 grid, top-right biru muda saat active) ── */
 function IconDashboard({ active }) {
@@ -40,6 +41,7 @@ const menuItems = [
   { key: "obat",          label: "Data Obat",     to: "/medicines" },
   { key: "pasien",        label: "Data Pasien",   to: "/patients" },
   { key: "ui-components", label: "UI Components", to: "/ui-components" },
+  { key: "fiturxyz", label: "Fitur Xyz", to: "/fiturxyz" },
 ];
 
 function MenuIcon({ itemKey, active }) {
@@ -50,6 +52,7 @@ function MenuIcon({ itemKey, active }) {
     case "obat":      return <LuPill className={cls} />;
     case "pasien":        return <LuUsers className={cls} />;
     case "ui-components": return <LuBoxes className={cls} />;
+    case "fiturxyz": return <LiaFile className={cls} />;
     default:          return null;
   }
 }
