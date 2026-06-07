@@ -4,42 +4,28 @@ import {
   FaPlus, FaChevronLeft, FaChevronRight,
 } from "react-icons/fa";
 import { HiOutlineHome } from "react-icons/hi2";
-import { LuClipboardList } from "react-icons/lu";
-import { MdShoppingCart } from "react-icons/md";
 import transactionsRaw from "../../data/transactions.json";
 import medicines from "../../data/medicines.json";
 import patients  from "../../data/patients.json";
 import TransactionBadge from "../../components/apotek/TransactionBadge";
 import InputField from "../../components/apotek/InputField";
 
-// ── shadcn/ui: Table 
+// ── shadcn/ui: Table ─────────────────────────────────────────
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
+  Table, TableHeader, TableBody,
+  TableHead, TableRow, TableCell,
 } from "@/components/ui/table";
 
-// ── shadcn/ui: Dialog 
+// ── shadcn/ui: Dialog ────────────────────────────────────────
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
+  Dialog, DialogContent, DialogHeader,
+  DialogTitle, DialogDescription, DialogFooter,
 } from "@/components/ui/dialog";
 
-// ── shadcn/ui: Select 
+// ── shadcn/ui: Select ────────────────────────────────────────
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem,
+  SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 
 const PAGE_SIZES = [10, 20, 50];
@@ -50,46 +36,30 @@ const enriched = transactionsRaw.map((t, i) => ({
   displayTotal: `Rp ${t.total.toLocaleString("id-ID")}`,
 }));
 
-function WeekBadge() {
-  return (
-    <button className="flex items-center gap-1 text-xs text-gray-400"
-      style={{ fontFamily: "Inter, sans-serif" }}>
-      Minggu Ini <FaChevronDown className="text-[10px]" />
-    </button>
-  );
-}
-
-// ── Form Tambah Transaksi (pakai shadcn Dialog + Select) ─────
+// ── Form Tambah Transaksi ────────────────────────────────────
 function FormTambahTransaksi({ open, onOpenChange }) {
   const [form, setForm] = useState({
-    patientId: "",
-    medicineId: "",
-    qty: 1,
-    jenis: "Ambil Langsung",
+    patientId: "", medicineId: "", qty: 1, jenis: "Ambil Langsung",
   });
 
   const selectedMed = medicines.find(m => m.id === form.medicineId);
   const total = selectedMed ? selectedMed.price * form.qty : 0;
 
   return (
-    // ── shadcn Dialog: controlled open state ──
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Buat Transaksi Baru</DialogTitle>
-          <DialogDescription>Pilih pasien, obat, dan jumlah pembelian.</DialogDescription>
+          <DialogDescription>Pilih pelanggan, obat, dan jumlah pembelian.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-
-          {/* ── shadcn Select: pilih pasien ── */}
+          {/* Pilih Pelanggan */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
-              Pasien
-            </label>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>Pelanggan</label>
             <Select value={form.patientId} onValueChange={v => setForm(f => ({ ...f, patientId: v }))}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="-- Pilih Pasien --" />
+                <SelectValue placeholder="-- Pilih Pelanggan --" />
               </SelectTrigger>
               <SelectContent>
                 {patients.map(p => (
@@ -99,11 +69,9 @@ function FormTambahTransaksi({ open, onOpenChange }) {
             </Select>
           </div>
 
-          {/* ── shadcn Select: pilih obat ── */}
+          {/* Pilih Obat */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
-              Obat
-            </label>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>Obat</label>
             <Select value={form.medicineId} onValueChange={v => setForm(f => ({ ...f, medicineId: v }))}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="-- Pilih Obat --" />
@@ -118,25 +86,16 @@ function FormTambahTransaksi({ open, onOpenChange }) {
             </Select>
           </div>
 
-          {/* Jumlah — InputField biasa */}
+          {/* Jumlah */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
-              Jumlah
-            </label>
-            <InputField
-              name="qty"
-              type="number"
-              placeholder="Jumlah"
-              value={form.qty}
-              onChange={e => setForm(f => ({ ...f, qty: e.target.value }))}
-            />
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>Jumlah</label>
+            <InputField name="qty" type="number" placeholder="Jumlah"
+              value={form.qty} onChange={e => setForm(f => ({ ...f, qty: e.target.value }))} />
           </div>
 
-          {/* ── shadcn Select: jenis layanan ── */}
+          {/* Jenis Layanan */}
           <div>
-            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>
-              Jenis Layanan
-            </label>
+            <label className="text-xs text-gray-500 mb-1.5 block" style={{ fontFamily: "Inter, sans-serif" }}>Jenis Layanan</label>
             <Select value={form.jenis} onValueChange={v => setForm(f => ({ ...f, jenis: v }))}>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -159,7 +118,6 @@ function FormTambahTransaksi({ open, onOpenChange }) {
           )}
         </div>
 
-        {/* ── shadcn DialogFooter: tombol aksi ── */}
         <DialogFooter className="gap-2">
           <button onClick={() => onOpenChange(false)}
             className="flex-1 py-2.5 text-sm text-[#5570F1] border border-[#5570F1] rounded-xl hover:bg-[#eef1fe] transition"
@@ -178,10 +136,10 @@ function FormTambahTransaksi({ open, onOpenChange }) {
 }
 
 export default function Transactions() {
-  const [search, setSearch]       = useState("");
-  const [selected, setSelected]   = useState([]);
-  const [pageSize, setPageSize]   = useState(10);
-  const [page, setPage]           = useState(1);
+  const [search, setSearch]         = useState("");
+  const [selected, setSelected]     = useState([]);
+  const [pageSize, setPageSize]     = useState(10);
+  const [page, setPage]             = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const filtered = useMemo(() => {
@@ -205,14 +163,9 @@ export default function Transactions() {
   const toggleOne = id =>
     setSelected(s => s.includes(id) ? s.filter(x => x !== id) : [...s, id]);
 
-  const semua      = enriched.length;
-  const diproses   = enriched.filter(t => t.status === "Diproses").length;
-  const selesai    = enriched.filter(t => t.status === "Selesai").length;
-  const dibatalkan = enriched.filter(t => t.status === "Dibatalkan").length;
-  const pendapatan = enriched.reduce((s, t) => s + t.total, 0);
-
   return (
     <div>
+      {/* Header */}
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
           Transaksi
@@ -224,89 +177,12 @@ export default function Transactions() {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
-          Ringkasan Transaksi
-        </h2>
-        {/* ── Tombol trigger shadcn Dialog ── */}
-        <button
-          className="flex items-center gap-2 bg-[#5570F1] text-white text-sm font-medium px-4 py-2 rounded-xl hover:bg-[#4460e0] transition"
-          style={{ fontFamily: "Inter, sans-serif" }}
-          onClick={() => setDialogOpen(true)}
-        >
-          <FaPlus className="text-xs" /> Buat Transaksi Baru
-        </button>
-      </div>
-
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-        <div className="bg-white rounded-2xl p-5 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
-              <LuClipboardList className="text-[#5570F1] text-lg" />
-            </div>
-            <WeekBadge />
-          </div>
-          <div className="flex gap-6 flex-wrap">
-            <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Semua</p>
-              <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>{semua}</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Diproses</p>
-              <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>{diproses}</p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Selesai</p>
-              <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>{selesai}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-5 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
-              <LuClipboardList className="text-[#5570F1] text-lg" />
-            </div>
-            <WeekBadge />
-          </div>
-          <div className="flex gap-6 flex-wrap">
-            <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Dibatalkan</p>
-              <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                {dibatalkan} <span className="text-[#CC5F5F] text-sm font-normal">-20%</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Dikembalikan</p>
-              <p className="text-2xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>0</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-5 shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
-              <MdShoppingCart className="text-[#5570F1] text-lg" />
-            </div>
-            <WeekBadge />
-          </div>
-          <div className="flex gap-6 flex-wrap">
-            <div>
-              <p className="text-xs text-[#CC5F5F] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Total Pendapatan</p>
-              <p className="text-xl font-bold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                Rp {pendapatan.toLocaleString("id-ID")}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── shadcn Table: data transaksi ── */}
-      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+      {/* Tabel Transaksi */}
+      <div className="mx-4 bg-white rounded-2xl shadow-sm overflow-hidden">
+        {/* Toolbar */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <h3 className="font-semibold text-[#1C1D22]" style={{ fontFamily: "Poppins, sans-serif" }}>
-            Data Transaksi Pasien
+            Data Transaksi
           </h3>
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -324,18 +200,25 @@ export default function Transactions() {
               style={{ fontFamily: "Inter, sans-serif" }}>
               <FaShareAlt className="text-xs" /> Ekspor
             </button>
+            {/* Tombol buka dialog tambah transaksi */}
+            <button
+              className="flex items-center gap-1.5 bg-[#5570F1] hover:bg-[#4460e0] text-white rounded-lg px-3 py-1.5 text-sm transition"
+              style={{ fontFamily: "Inter, sans-serif" }}
+              onClick={() => setDialogOpen(true)}>
+              <FaPlus className="text-xs" /> Buat Transaksi
+            </button>
           </div>
         </div>
 
+        {/* shadcn Table */}
         <Table>
           <TableHeader>
             <TableRow>
-              {/* Checkbox select all */}
               <TableHead className="w-10 px-5">
                 <input type="checkbox" checked={allChecked} onChange={toggleAll}
                   className="w-4 h-4 rounded border-gray-300 accent-[#5570F1]" />
               </TableHead>
-              {["ID","Nama Pasien","Obat","Tanggal","Jenis","Qty","Total","Status"].map(h => (
+              {["ID","Nama Pelanggan","Obat","Tanggal","Jenis","Qty","Total","Status"].map(h => (
                 <TableHead key={h} className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider whitespace-nowrap"
                   style={{ fontFamily: "Inter, sans-serif" }}>
                   <span className="flex items-center gap-1">
@@ -360,7 +243,6 @@ export default function Transactions() {
                 <TableCell className="px-4 text-gray-500">{t.jenis}</TableCell>
                 <TableCell className="px-4 text-gray-700">{t.qty}</TableCell>
                 <TableCell className="px-4 font-medium text-[#1C1D22]">{t.displayTotal}</TableCell>
-                {/* TransactionBadge — status Selesai/Diproses/Dibatalkan */}
                 <TableCell className="px-4">
                   <TransactionBadge type={t.status} />
                 </TableCell>
@@ -395,7 +277,7 @@ export default function Transactions() {
         </div>
       </div>
 
-      {/* ── shadcn Dialog form tambah transaksi ── */}
+      {/* Dialog form tambah transaksi */}
       <FormTambahTransaksi open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );

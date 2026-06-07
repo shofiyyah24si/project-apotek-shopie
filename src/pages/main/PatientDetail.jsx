@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { FaArrowLeft, FaPhone, FaEnvelope } from "react-icons/fa";
 import { LuUsers, LuMapPin, LuCalendar, LuDroplets, LuCircleAlert, LuClipboard, LuShoppingCart, LuMessageSquare, LuShare2 } from "react-icons/lu";
 import { HiOutlineHome } from "react-icons/hi2";
@@ -25,17 +26,23 @@ export default function PatientDetail() {
   const { id } = useParams();
   const patient = patientsData.find((p) => p.id === id);
 
+  // useEffect: scroll ke atas saat halaman detail pelanggan dibuka
+  // dependency [id] → dijalankan ulang setiap kali id pelanggan berubah
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [id]);
+
   if (!patient) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-gray-400">
         <LuUsers className="text-5xl mb-3 text-gray-300" />
         <p className="text-lg font-medium" style={{ fontFamily: "Poppins, sans-serif" }}>
-          Pasien tidak ditemukan
+          Pelanggan tidak ditemukan
         </p>
-        <Link to="/patients"
+        <Link to="/customers"
           className="mt-4 text-[#5570F1] hover:underline text-sm flex items-center gap-1"
           style={{ fontFamily: "Inter, sans-serif" }}>
-          <FaArrowLeft className="text-xs" /> Kembali ke Data Pasien
+          <FaArrowLeft className="text-xs" /> Kembali ke Data Pelanggan
         </Link>
       </div>
     );
@@ -50,15 +57,15 @@ export default function PatientDetail() {
       <div className="px-4 pb-4">
         <h1 className="text-2xl font-bold text-[#1C1D22]"
           style={{ fontFamily: "Poppins, sans-serif" }}>
-          Detail Pasien
+          Detail Pelanggan
         </h1>
         <div className="flex items-center gap-1.5 mt-1 text-sm">
           <HiOutlineHome className="text-base text-gray-400" />
           <span className="text-gray-400">/</span>
-          <Link to="/patients"
+          <Link to="/customers"
             className="text-gray-400 hover:text-[#5570F1]"
             style={{ fontFamily: "Inter, sans-serif" }}>
-            Data Pasien
+            Data Pelanggan
           </Link>
           <span className="text-gray-400">/</span>
           <span className="text-[#5570F1] font-medium"
@@ -70,10 +77,10 @@ export default function PatientDetail() {
 
       <div className="mx-4 space-y-4">
         {/* Back */}
-        <Link to="/patients"
+        <Link to="/customers"
           className="inline-flex items-center gap-2 text-sm text-[#5570F1] hover:text-[#4460e0] font-medium"
           style={{ fontFamily: "Inter, sans-serif" }}>
-          <FaArrowLeft className="text-xs" /> Kembali ke Data Pasien
+          <FaArrowLeft className="text-xs" /> Kembali ke Data Pelanggan
         </Link>
 
         {/* Profile card */}
@@ -105,10 +112,13 @@ export default function PatientDetail() {
               </div>
             </div>
 
-            {/* Status badge */}
-            <span className="hidden sm:inline-flex items-center gap-1.5 bg-[#eef1fe] text-[#5570F1] text-xs font-semibold px-3 py-1.5 rounded-full"
-              style={{ fontFamily: "Inter, sans-serif" }}>
-              ● Aktif
+            {/* Status badge — dari data statusMember */}
+            <span className={`hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${
+              patient.statusMember === "Aktif"
+                ? "bg-green-100 text-green-600"
+                : "bg-orange-100 text-orange-600"
+            }`} style={{ fontFamily: "Inter, sans-serif" }}>
+              ● {patient.statusMember}
             </span>
           </div>
         </div>

@@ -2,19 +2,16 @@ import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Loading from "./components/Loading";
 
-const MainLayout   = React.lazy(() => import("./layouts/MainLayout"));
-const AuthLayout   = React.lazy(() => import("./layouts/AuthLayout"));
+const MainLayout     = React.lazy(() => import("./layouts/MainLayout"));
+const AuthLayout     = React.lazy(() => import("./layouts/AuthLayout"));
 
-const Dashboard    = React.lazy(() => import("./pages/main/Dashboard"));
-const Transactions = React.lazy(() => import("./pages/main/Transactions"));
-const Medicines    = React.lazy(() => import("./pages/main/Medicines"));
+const Dashboard      = React.lazy(() => import("./pages/main/Dashboard"));
+const Transactions   = React.lazy(() => import("./pages/main/Transactions"));
+const Medicines      = React.lazy(() => import("./pages/main/Medicines"));
 const MedicineDetail = React.lazy(() => import("./pages/main/MedicineDetail"));
-const Patients     = React.lazy(() => import("./pages/main/Patients"));
+const Patients       = React.lazy(() => import("./pages/main/Patients"));
 const PatientDetail  = React.lazy(() => import("./pages/main/PatientDetail"));
-const NotFound     = React.lazy(() => import("./pages/main/NotFound"));
-const UIComponents = React.lazy(() => import("./pages/UIComponents"));
-const FiturXyz = React.lazy(() => import("./pages/main/FiturXyz"));
-
+const NotFound       = React.lazy(() => import("./pages/main/NotFound"));
 
 const Login    = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
@@ -27,16 +24,13 @@ export default function App() {
 
         {/* Main Layout */}
         <Route element={<MainLayout />}>
-          <Route path="/"               element={<Dashboard />} />
-          <Route path="/transactions"   element={<Transactions />} />
-          <Route path="/medicines"      element={<Medicines />} />
-          <Route path="/medicines/:id"  element={<MedicineDetail />} />
-          <Route path="/patients"       element={<Patients />} />
-          <Route path="/patients/:id"   element={<PatientDetail />} />
-          <Route path="/ui-components"  element={<UIComponents />} />
-          <Route path="/fiturxyz"       element={<FiturXyz />} />
-          <Route path="*"               element={<NotFound />} />
-
+          <Route path="/"              element={<Dashboard />} />
+          <Route path="/transactions"  element={<Transactions />} />
+          <Route path="/medicines"     element={<Medicines />} />
+          <Route path="/medicines/:id" element={<MedicineDetail />} />
+          <Route path="/customers"     element={<Patients />} />
+          <Route path="/customers/:id" element={<PatientDetail />} />
+          <Route path="*"              element={<NotFound />} />
         </Route>
 
         {/* Auth Layout */}

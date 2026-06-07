@@ -65,6 +65,32 @@ export default function Medicines() {
       </PageHeader>
 
       <AppContainer>
+        {/* Operational CRM: alert stok kritis — admin segera ambil tindakan */}
+        {(() => {
+          const kritis = medicinesData.filter(m => m.stock > 0 && m.stock < 50);
+          const habis  = medicinesData.filter(m => m.stock === 0);
+          if (kritis.length === 0 && habis.length === 0) return null;
+          return (
+            <div className="mb-4 flex flex-wrap gap-3">
+              {habis.length > 0 && (
+                <div className="flex items-center gap-2.5 bg-red-50 border border-red-200 rounded-xl px-4 py-2.5">
+                  <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+                  <p className="text-sm text-red-600 font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
+                    {habis.length} obat <strong>habis</strong>: {habis.map(m => m.name).join(", ")}
+                  </p>
+                </div>
+              )}
+              {kritis.length > 0 && (
+                <div className="flex items-center gap-2.5 bg-orange-50 border border-orange-200 rounded-xl px-4 py-2.5">
+                  <span className="w-2 h-2 rounded-full bg-orange-400 flex-shrink-0" />
+                  <p className="text-sm text-orange-600 font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
+                    {kritis.length} obat stok <strong>kritis</strong> (&lt;50 unit) — segera restock
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        })()}
         <AppCard className="overflow-x-auto">
           {medicinesData.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-gray-400">

@@ -1,20 +1,10 @@
 import { NavLink } from "react-router-dom";
 import {
-  HiOutlineCog6Tooth,
-} from "react-icons/hi2";
-import {
-  LuLayoutDashboard,
-  LuPill,
-  LuUsers,
-  LuClipboardList,
-  LuHeadset,
-  LuBoxes,
+  LuPill, LuUsers, LuClipboardList, LuHeadset,
 } from "react-icons/lu";
-import { FaGift } from "react-icons/fa";
 import { MdLogout, MdMedicalServices } from "react-icons/md";
-import { LiaFile } from "react-icons/lia";
 
-/* ── Custom Dashboard icon (2x2 grid, top-right biru muda saat active) ── */
+/* ── Custom Dashboard icon ──────────────────────────────────── */
 function IconDashboard({ active }) {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -34,14 +24,12 @@ function IconDashboard({ active }) {
   );
 }
 
-/* ── Menu items — struktur apotek lama ─────────────────────── */
+/* ── Menu items ─────────────────────────────────────────────── */
 const menuItems = [
-  { key: "dashboard",     label: "Dashboard",     to: "/" },
-  { key: "transaksi",     label: "Transaksi",     to: "/transactions" },
-  { key: "obat",          label: "Data Obat",     to: "/medicines" },
-  { key: "pasien",        label: "Data Pasien",   to: "/patients" },
-  { key: "ui-components", label: "UI Components", to: "/ui-components" },
-  { key: "fiturxyz", label: "Fitur Xyz", to: "/fiturxyz" },
+  { key: "dashboard",   label: "Dashboard",       to: "/" },
+  { key: "transaksi",   label: "Transaksi",        to: "/transactions" },
+  { key: "obat",        label: "Data Obat",        to: "/medicines" },
+  { key: "pelanggan",   label: "Data Pelanggan",   to: "/customers" },
 ];
 
 function MenuIcon({ itemKey, active }) {
@@ -50,19 +38,17 @@ function MenuIcon({ itemKey, active }) {
     case "dashboard": return <IconDashboard active={active} />;
     case "transaksi": return <LuClipboardList className={cls} />;
     case "obat":      return <LuPill className={cls} />;
-    case "pasien":        return <LuUsers className={cls} />;
-    case "ui-components": return <LuBoxes className={cls} />;
-    case "fiturxyz": return <LiaFile className={cls} />;
+    case "pelanggan": return <LuUsers className={cls} />;
     default:          return null;
   }
 }
 
-/* ── Component ─────────────────────────────────────────────── */
+/* ── Sidebar Component ──────────────────────────────────────── */
 export default function Sidebar() {
   return (
     <div className="flex h-screen w-64 flex-col bg-white shadow-xl border-r border-gray-100">
 
-      {/* Logo — Apotek ShopiCare */}
+      {/* Logo */}
       <div className="px-6 py-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
           <div className="bg-[#5570F1] p-2 rounded-xl shadow">
@@ -115,27 +101,11 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div className="px-4 py-5 border-t border-gray-100 space-y-3">
-        {/* Contact Support */}
-        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition text-sm">
-          <LuHeadset className="text-xl flex-shrink-0" />
-          <span style={{ fontFamily: "Inter, sans-serif" }}>Contact Support</span>
+        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-50 text-gray-600 hover:bg-gray-100 transition text-sm">
+          <LuHeadset className="text-xl flex-shrink-0 text-gray-400" />
+          <span style={{ fontFamily: "Inter, sans-serif" }}>Bantuan & Dukungan</span>
         </button>
 
-        {/* Free Gift */}
-        <div className="bg-orange-50 border border-orange-100 rounded-xl px-3 py-3">
-          <div className="flex items-center gap-2 mb-1">
-            <FaGift className="text-[#FFCC91] text-lg flex-shrink-0" />
-            <span className="font-bold text-sm text-gray-800" style={{ fontFamily: "Inter, sans-serif" }}>
-              Free Gift Awaits You!
-            </span>
-          </div>
-          <p className="text-xs text-gray-500" style={{ fontFamily: "Inter, sans-serif" }}>
-            Upgrade your account{" "}
-            <span className="text-[#5570F1] cursor-pointer">›</span>
-          </p>
-        </div>
-
-        {/* Logout */}
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[#CC5F5F] hover:bg-red-50 transition text-sm">
           <MdLogout className="text-xl flex-shrink-0" />
           <span style={{ fontFamily: "Inter, sans-serif" }}>Logout</span>

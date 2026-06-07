@@ -12,14 +12,18 @@ import medicines    from "../../data/medicines.json";
 import patients     from "../../data/patients.json";
 
 /* ── Stats ─────────────────────────────────────────────────── */
-const totalPendapatan = transactions.reduce((s, t) => s + t.total, 0);
-const totalPasien     = patients.length;
-const pasienAktif     = patients.filter(p => new Date(p.lastVisit) >= new Date("2026-01-01")).length;
-const totalTrx        = transactions.length;
-const trxProses       = transactions.filter(t => t.status === "Diproses").length;
-const trxSelesai      = transactions.filter(t => t.status === "Selesai").length;
-const obatAktif       = medicines.filter(m => m.stock > 0).length;
-const trxBatal        = transactions.filter(t => t.status === "Dibatalkan").length;
+const totalPendapatan  = transactions.reduce((s, t) => s + t.total, 0);
+const totalPasien      = patients.length;
+const pasienAktif      = patients.filter(p => p.statusMember === "Aktif").length;
+const pasienTidakAktif = patients.filter(p => p.statusMember === "Tidak Aktif").length;
+const totalTrx         = transactions.length;
+const trxProses        = transactions.filter(t => t.status === "Diproses").length;
+const trxSelesai       = transactions.filter(t => t.status === "Selesai").length;
+const obatAktif        = medicines.filter(m => m.stock > 0).length;
+const trxBatal         = transactions.filter(t => t.status === "Dibatalkan").length;
+// Analytical CRM: stok kritis
+const stokKritis       = medicines.filter(m => m.stock > 0 && m.stock < 50).length;
+const stokHabis        = medicines.filter(m => m.stock === 0).length;
 
 /* ── Bar chart ──────────────────────────────────────────────── */
 const summaryData = [
@@ -115,7 +119,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Pasien */}
+        {/* Pelanggan */}
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <div className="flex justify-between items-start mb-3">
             <div className="w-9 h-9 rounded-xl bg-[#eef1fe] flex items-center justify-center">
@@ -125,19 +129,26 @@ export default function Dashboard() {
           </div>
           <div className="flex items-end gap-5">
             <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Total Pasien</p>
+              {/* Analytical CRM: total pelanggan terdaftar */}
+              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Total Pelanggan</p>
               <p className="text-xl font-bold text-[#1C1D22]"
                 style={{ fontFamily: "Poppins, sans-serif" }}>
                 {totalPasien} <span className="text-[#519C66] text-sm font-normal">+15.80%</span>
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Aktif</p>
-              <p className="text-xl font-bold text-[#1C1D22]"
+              {/* Strategic CRM: monitor pelanggan tidak aktif */}
+              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Tidak Aktif</p>
+              <p className="text-xl font-bold text-[#CC5F5F]"
                 style={{ fontFamily: "Poppins, sans-serif" }}>
-                {pasienAktif} <span className="text-xs text-gray-400 font-normal">
-                  {Math.round((pasienAktif/totalPasien)*100)}%
-                </span>
+                {pasienTidakAktif}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 mb-1" style={{ fontFamily: "Inter, sans-serif" }}>Aktif</p>
+              <p className="text-xl font-bold text-[#519C66]"
+                style={{ fontFamily: "Poppins, sans-serif" }}>
+                {pasienAktif}
               </p>
             </div>
           </div>
@@ -203,12 +214,12 @@ export default function Dashboard() {
 
         {/* Middle: Blue card + Abandoned */}
         <div className="flex flex-col gap-3">
-          {/* Stok Obat — primary */}
+          {/* Stok Obat — Analytical CRM: monitor stok kritis */}
           <div className="bg-[#5570F1] rounded-2xl p-4 text-white flex-1">
             <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center mb-3">
               <MdFolder className="text-white text-lg" />
             </div>
-            <div className="flex gap-6">
+            <div className="flex gap-4 flex-wrap">
               <div>
                 <p className="text-xs text-[#bbcafb] mb-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
                   Total Obat
@@ -218,14 +229,19 @@ export default function Dashboard() {
                 </p>
               </div>
               <div>
-                <p className="text-xs text-[#bbcafb] mb-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Tersedia
+                <p className="text-xs text-[#FFCC91] mb-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Stok Kritis
                 </p>
-                <p className="text-2xl font-bold" style={{ fontFamily: "Poppins, sans-serif" }}>
-                  {obatAktif}{" "}
-                  <span className="text-sm font-normal text-[#bbcafb]">
-                    +{Math.round((obatAktif/medicines.length)*100)}%
-                  </span>
+                <p className="text-2xl font-bold text-[#FFCC91]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                  {stokKritis}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-[#ff9999] mb-0.5" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Habis
+                </p>
+                <p className="text-2xl font-bold text-[#ffaaaa]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                  {stokHabis}
                 </p>
               </div>
             </div>

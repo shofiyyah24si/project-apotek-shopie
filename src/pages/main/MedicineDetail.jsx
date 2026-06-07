@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaExclamationTriangle } from "react-icons/fa";
 import { LuPill, LuFactory } from "react-icons/lu";
@@ -36,6 +36,20 @@ export default function MedicineDetail() {
   const { id } = useParams();
   const [imgError, setImgError] = useState(false);
   const medicine = medicinesData.find((m) => m.id === id);
+
+  // useEffect: update judul tab browser sesuai nama obat yang dibuka
+  // dependency [medicine] → dijalankan ulang setiap kali obat yang ditampilkan berubah
+  useEffect(() => {
+    if (medicine) {
+      document.title = `${medicine.name} — Apotek ShopiCare`;
+    } else {
+      document.title = "Detail Obat — Apotek ShopiCare";
+    }
+    // cleanup: kembalikan judul tab saat meninggalkan halaman
+    return () => {
+      document.title = "Apotek ShopiCare";
+    };
+  }, [medicine]);
 
   if (!medicine) {
     return (
