@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
-import { ImSpinner2 } from "react-icons/im";
-import { LuCircleAlert } from "react-icons/lu";
 import { useNavigate, Link } from "react-router-dom";
+import { LuCircleAlert, LuCircleCheck } from "react-icons/lu";
+import { ImSpinner2 } from "react-icons/im";
+import { userAPI } from "../../services/userAPI";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,21 +18,41 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
-    axios
-      .post("https://dummyjson.com/user/login", {
-        username: dataForm.email,
-        password: dataForm.password,
-      })
-      .then((res) => {
-        if (res.status !== 200) { setError(res.data.message); return; }
+
+    if (!dataForm.email || !dataForm.password) {
+      setError("Email dan password wajib diisi");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Cari user dari Supabase berdasarkan email & password
+      const users = await userAPI.loginUser(dataForm.email, dataForm.password);
+
+      if (!users || users.length === 0) {
+        setError("Email atau password salah");
+        return;
+      }
+
+      const user = users[0];
+
+      // Simpan data user ke localStorage
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Redirect berdasarkan role
+      if (user.role === "admin") {
         navigate("/");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || "Username atau password salah");
-      })
-      .finally(() => setLoading(false));
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      setError("Terjadi kesalahan. Coba lagi nanti.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -60,22 +80,24 @@ export default function Login() {
         <div className="bg-[#eef1fe] mb-5 p-3 text-sm text-[#5570F1] rounded-xl flex items-center gap-2"
           style={{ fontFamily: "Inter, sans-serif" }}>
           <ImSpinner2 className="animate-spin flex-shrink-0" />
-          Mohon tunggu...
+          Memverifikasi akun...
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Username */}
+        {/* Email */}
         <div>
           <label className="block text-sm font-medium text-[#1C1D22] mb-1.5"
             style={{ fontFamily: "Inter, sans-serif" }}>
-            Username
+            Email
           </label>
           <input
-            type="text" name="email"
+            type="email" name="email"
+            value={dataForm.email}
             onChange={handleChange}
-            placeholder="Masukkan username"
-            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition"
+            disabled={loading}
+            placeholder="admin@apotek.com"
+            className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition disabled:opacity-60"
             style={{ fontFamily: "Inter, sans-serif" }}
           />
         </div>
@@ -97,9 +119,11 @@ export default function Login() {
             <input
               type={showPass ? "text" : "password"}
               name="password"
+              value={dataForm.password}
               onChange={handleChange}
+              disabled={loading}
               placeholder="••••••••"
-              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition pr-10"
+              className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition pr-24 disabled:opacity-60"
               style={{ fontFamily: "Inter, sans-serif" }}
             />
             <button type="button"

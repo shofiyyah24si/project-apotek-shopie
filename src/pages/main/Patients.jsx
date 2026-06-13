@@ -34,8 +34,6 @@ export default function Patients() {
   // useRef: referensi ke elemen input search tanpa menyebabkan re-render
   const searchRef = useRef(null);
 
-  // useEffect: fokuskan kursor ke input search saat halaman pertama kali dibuka
-  // dependency [] kosong → hanya dijalankan sekali saat komponen mount
   useEffect(() => {
     if (searchRef.current) {
       searchRef.current.focus();

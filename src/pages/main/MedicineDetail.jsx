@@ -45,7 +45,6 @@ export default function MedicineDetail() {
     } else {
       document.title = "Detail Obat — Apotek ShopiCare";
     }
-    // cleanup: kembalikan judul tab saat meninggalkan halaman
     return () => {
       document.title = "Apotek ShopiCare";
     };
