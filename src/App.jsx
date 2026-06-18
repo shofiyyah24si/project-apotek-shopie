@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
 
 const MainLayout     = React.lazy(() => import("./layouts/MainLayout"));
+const MemberLayout   = React.lazy(() => import("./layouts/MemberLayout"));
 const AuthLayout     = React.lazy(() => import("./layouts/AuthLayout"));
 
 const Dashboard      = React.lazy(() => import("./pages/main/Dashboard"));
@@ -14,23 +15,38 @@ const PatientDetail  = React.lazy(() => import("./pages/main/PatientDetail"));
 const Users          = React.lazy(() => import("./pages/main/Users"));
 const NotFound       = React.lazy(() => import("./pages/main/NotFound"));
 
+// Halaman member
+const DashboardMember  = React.lazy(() => import("./pages/member/DashboardMember"));
+const KatalogObat      = React.lazy(() => import("./pages/member/KatalogObat"));
+const RiwayatTransaksi = React.lazy(() => import("./pages/member/RiwayatTransaksi"));
+const KomplainFeedback = React.lazy(() => import("./pages/member/KomplainFeedback"));
+
 const Login    = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot   = React.lazy(() => import("./pages/auth/Forgot"));
 
-// ── Proteksi route: redirect ke /login jika belum login ──────
+// Proteksi: redirect ke /login jika belum login
 function PrivateRoute({ children }) {
   const user = localStorage.getItem("user");
   if (!user) return <Navigate to="/login" replace />;
   return children;
 }
 
-// ── Proteksi khusus admin: redirect ke / jika bukan admin ────
+// Proteksi khusus admin
 function AdminRoute({ children }) {
   const raw = localStorage.getItem("user");
   if (!raw) return <Navigate to="/login" replace />;
   const user = JSON.parse(raw);
-  if (user.role !== "admin") return <Navigate to="/" replace />;
+  if (user.role !== "admin") return <Navigate to="/member" replace />;
+  return children;
+}
+
+// Proteksi khusus member (role user)
+function MemberRoute({ children }) {
+  const raw = localStorage.getItem("user");
+  if (!raw) return <Navigate to="/login" replace />;
+  const user = JSON.parse(raw);
+  if (user.role === "admin") return <Navigate to="/" replace />;
   return children;
 }
 
@@ -39,23 +55,24 @@ export default function App() {
     <Suspense fallback={<Loading />}>
       <Routes>
 
-        {/* Main Layout — semua route dilindungi */}
-        <Route element={
-          <PrivateRoute>
-            <MainLayout />
-          </PrivateRoute>
-        }>
+        {/* Admin Layout */}
+        <Route element={<AdminRoute><MainLayout /></AdminRoute>}>
           <Route path="/"              element={<Dashboard />} />
           <Route path="/transactions"  element={<Transactions />} />
           <Route path="/medicines"     element={<Medicines />} />
           <Route path="/medicines/:id" element={<MedicineDetail />} />
           <Route path="/customers"     element={<Patients />} />
           <Route path="/customers/:id" element={<PatientDetail />} />
-          {/* Route khusus admin */}
-          <Route path="/users" element={
-            <AdminRoute><Users /></AdminRoute>
-          } />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/users"         element={<Users />} />
+          <Route path="*"              element={<NotFound />} />
+        </Route>
+
+        {/* Member Layout */}
+        <Route element={<MemberRoute><MemberLayout /></MemberRoute>}>
+          <Route path="/member"          element={<DashboardMember />} />
+          <Route path="/member/katalog"  element={<KatalogObat />} />
+          <Route path="/member/riwayat"  element={<RiwayatTransaksi />} />
+          <Route path="/member/komplain" element={<KomplainFeedback />} />
         </Route>
 
         {/* Auth Layout — public */}

@@ -37,16 +37,13 @@ export default function Login() {
       }
 
       const user = users[0];
-
-      // Simpan data user ke localStorage
       localStorage.setItem("user", JSON.stringify(user));
-
-      // Redirect berdasarkan role
       if (user.role === "admin") {
         navigate("/");
       } else {
         navigate("/");
       }
+      
     } catch (err) {
       setError("Terjadi kesalahan. Coba lagi nanti.");
       console.error(err);

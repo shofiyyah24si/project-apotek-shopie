@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://ldexaprfnqjswfawiooq.supabase.co/rest/v1/users";
+const BASE    = "https://ldexaprfnqjswfawiooq.supabase.co/rest/v1";
 const API_KEY = "sb_publishable_8hDu4GKBE871zgPnFlwBjg_dPcwzfRA";
 
 const headers = {
@@ -9,62 +9,132 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+// ── Users ────────────────────────────────────────────────────
+const USERS_URL = `${BASE}/users`;
+
 export const userAPI = {
 
-  // READ — ambil semua user (untuk halaman admin)
   async fetchUsers() {
-    const res = await axios.get(API_URL, { headers });
+    const res = await axios.get(USERS_URL, { headers });
     return res.data;
   },
 
-  // LOGIN — cari user berdasarkan email & password
   async loginUser(email, password) {
     const res = await axios.get(
-      `${API_URL}?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}`,
+      `${USERS_URL}?email=eq.${encodeURIComponent(email)}&password=eq.${encodeURIComponent(password)}`,
       { headers }
     );
-    return res.data; // array, index [0] jika ada
+    return res.data;
   },
 
-  // REGISTER — daftar user baru dengan role "user"
   async registerUser(data) {
     const res = await axios.post(
-      API_URL,
-      { nama: data.nama, email: data.email, password: data.password, role: "user" },
+      USERS_URL,
+      { nama: data.nama, email: data.email, password: data.password, role: "user", level: "Bronze" },
       { headers: { ...headers, Prefer: "return=representation" } }
     );
     return res.data;
   },
 
-  // CREATE — admin tambah user baru
   async createUser(data) {
-    const res = await axios.post(API_URL, data, {
+    const res = await axios.post(USERS_URL, data, {
       headers: { ...headers, Prefer: "return=representation" },
     });
     return res.data;
   },
 
-  // UPDATE — edit user berdasarkan id
   async updateUser(id, data) {
     const res = await axios.patch(
-      `${API_URL}?id=eq.${id}`,
+      `${USERS_URL}?id=eq.${id}`,
       data,
       { headers: { ...headers, Prefer: "return=representation" } }
     );
     return res.data;
   },
 
-  // DELETE — hapus user berdasarkan id
   async deleteUser(id) {
-    await axios.delete(`${API_URL}?id=eq.${id}`, { headers });
+    await axios.delete(`${USERS_URL}?id=eq.${id}`, { headers });
   },
 
-  // CEK EMAIL — untuk validasi duplikat saat register
   async checkEmailExists(email) {
     const res = await axios.get(
-      `${API_URL}?email=eq.${encodeURIComponent(email)}`,
+      `${USERS_URL}?email=eq.${encodeURIComponent(email)}`,
       { headers }
     );
     return res.data.length > 0;
+  },
+
+  // UPDATE LEVEL otomatis berdasarkan jumlah transaksi
+  async updateLevel(userId, totalTransaksi) {
+    let level = "Bronze";
+    if (totalTransaksi >= 20) level = "Platinum";
+    else if (totalTransaksi >= 10) level = "Gold";
+    else if (totalTransaksi >= 5)  level = "Silver";
+
+    await axios.patch(
+      `${USERS_URL}?id=eq.${userId}`,
+      { level },
+      { headers: { ...headers, Prefer: "return=representation" } }
+    );
+    return level;
+  },
+};
+
+// ── Transactions ─────────────────────────────────────────────
+const TRX_URL = `${BASE}/transactions`;
+
+export const transactionAPI = {
+
+  // Ambil semua transaksi (admin)
+  async fetchAll() {
+    const res = await axios.get(`${TRX_URL}?order=created_at.desc`, { headers });
+    return res.data;
+  },
+
+  // Ambil transaksi milik user tertentu saja (member)
+  async fetchByUser(userId) {
+    const res = await axios.get(
+      `${TRX_URL}?user_id=eq.${userId}&order=created_at.desc`,
+      { headers }
+    );
+    return res.data;
+  },
+
+  // Tambah transaksi baru
+  async createTransaction(data) {
+    const res = await axios.post(TRX_URL, data, {
+      headers: { ...headers, Prefer: "return=representation" },
+    });
+    return res.data;
+  },
+};
+
+// ── Complaints ───────────────────────────────────────────────
+const COMPLAINTS_URL = `${BASE}/complaints`;
+
+export const complaintAPI = {
+
+  // Ambil semua komplain (admin)
+  async fetchAll() {
+    const res = await axios.get(`${COMPLAINTS_URL}?order=created_at.desc`, { headers });
+    return res.data;
+  },
+
+  // Kirim komplain baru (member)
+  async submitComplaint(data) {
+    const res = await axios.post(COMPLAINTS_URL, data, {
+      headers: { ...headers, Prefer: "return=representation" },
+    });
+    return res.data;
+  },
+
+  // Update status komplain (admin)
+  async updateStatus(id, status) {
+    const res = await axios.patch(
+      `${COMPLAINTS_URL}?id=eq.${id}`,
+      { status },
+      { headers: { ...headers, Prefer: "return=representation" } }
+    );
+    return res.data;
   },
 };
