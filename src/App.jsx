@@ -37,6 +37,7 @@ function AdminRoute({ children }) {
   const raw = localStorage.getItem("user");
   if (!raw) return <Navigate to="/login" replace />;
   const user = JSON.parse(raw);
+  // Kalau bukan admin, arahkan ke halaman member bukan ke /
   if (user.role !== "admin") return <Navigate to="/member" replace />;
   return children;
 }
@@ -44,10 +45,21 @@ function AdminRoute({ children }) {
 // Proteksi khusus member (role user)
 function MemberRoute({ children }) {
   const raw = localStorage.getItem("user");
+  // Belum login → ke halaman login
   if (!raw) return <Navigate to="/login" replace />;
   const user = JSON.parse(raw);
+  // Kalau admin coba akses /member → ke dashboard admin
   if (user.role === "admin") return <Navigate to="/" replace />;
   return children;
+}
+
+// Redirect root berdasarkan role
+function RootRedirect() {
+  const raw = localStorage.getItem("user");
+  if (!raw) return <Navigate to="/login" replace />;
+  const user = JSON.parse(raw);
+  if (user.role === "admin") return <Navigate to="/dashboard" replace />;
+  return <Navigate to="/member" replace />;
 }
 
 export default function App() {
@@ -57,7 +69,7 @@ export default function App() {
 
         {/* Admin Layout */}
         <Route element={<AdminRoute><MainLayout /></AdminRoute>}>
-          <Route path="/"              element={<Dashboard />} />
+          <Route path="/dashboard"     element={<Dashboard />} />
           <Route path="/transactions"  element={<Transactions />} />
           <Route path="/medicines"     element={<Medicines />} />
           <Route path="/medicines/:id" element={<MedicineDetail />} />
@@ -66,6 +78,9 @@ export default function App() {
           <Route path="/users"         element={<Users />} />
           <Route path="*"              element={<NotFound />} />
         </Route>
+
+        {/* Root — redirect sesuai role */}
+        <Route path="/" element={<RootRedirect />} />
 
         {/* Member Layout */}
         <Route element={<MemberRoute><MemberLayout /></MemberRoute>}>
