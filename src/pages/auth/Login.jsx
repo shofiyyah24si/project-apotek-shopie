@@ -93,7 +93,7 @@ export default function Login() {
             value={dataForm.email}
             onChange={handleChange}
             disabled={loading}
-            placeholder="admin@apotek.com"
+            placeholder="Masukkan email Anda"
             className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-[#5570F1] focus:ring-2 focus:ring-[#eef1fe] transition disabled:opacity-60"
             style={{ fontFamily: "Inter, sans-serif" }}
           />
