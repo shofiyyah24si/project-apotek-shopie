@@ -11,7 +11,7 @@ export default function Hero() {
           {/* Badge */}
           <span className="inline-flex items-center gap-1.5 bg-[#5570F1]/10 text-[#5570F1] text-xs font-semibold px-3 py-1.5 rounded-full mb-5"
             style={{ fontFamily: "Inter, sans-serif" }}>
-            <LuShieldCheck className="text-sm" /> Apotek Terpercaya Sejak 2020
+            <LuShieldCheck className="text-sm" /> Apotek Terpercaya Sejak 2026
           </span>
 
           <h1 className="text-4xl md:text-5xl font-bold text-[#1C1D22] leading-tight mb-5"
@@ -64,7 +64,7 @@ export default function Hero() {
           <div className="relative w-full max-w-sm">
             <div className="bg-[#5570F1] rounded-3xl w-full aspect-square flex items-center justify-center shadow-2xl shadow-[#5570F1]/20 overflow-hidden">
               <img
-                src="/img/Hello.jpg"
+                src="/img/obat1.png"
                 alt="Apotek Shopie"
                 className="w-full h-full object-cover rounded-3xl opacity-90"
                 onError={e => { e.target.style.display = "none"; }}
