@@ -3,7 +3,7 @@
  * Klik → buka tab baru ke wa.me dengan pesan otomatis terisi
  */
 export default function FloatingWhatsApp() {
-  const noWA    = "62822445992";  // ganti dengan nomor apotek (format internasional tanpa +)
+  const noWA    = "6282244592992";  // ganti dengan nomor apotek (format internasional tanpa +)
   const pesan   = "Halo Apotek Shopie, saya pengunjung website dan ingin berkonsultasi mengenai obat...";
   const waLink  = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
 

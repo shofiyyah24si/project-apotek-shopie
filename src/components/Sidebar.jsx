@@ -89,7 +89,7 @@ export default function Sidebar() {
   // Logout: hapus localStorage dan redirect ke login
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/home");
   };
 
   return (

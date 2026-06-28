@@ -17,7 +17,7 @@ export default function MemberLayout() {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/home");
   };
 
   return (

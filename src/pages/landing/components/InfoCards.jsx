@@ -26,7 +26,7 @@ const cards = [
 
 export default function InfoCards() {
   return (
-    <section className="bg-white py-16 px-6">
+    <section id="informasi" className="bg-white py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-10">
           <h2 className="text-2xl font-bold text-[#1C1D22]"

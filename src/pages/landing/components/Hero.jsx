@@ -3,7 +3,7 @@ import { LuShieldCheck, LuClock, LuPill } from "react-icons/lu";
 
 export default function Hero() {
   return (
-    <section className="bg-gradient-to-br from-[#eef1fe] via-white to-white py-20 px-6">
+    <section id="beranda" className="bg-gradient-to-br from-[#eef1fe] via-white to-white py-20 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
 
         {/* Teks */}
@@ -27,15 +27,15 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-            <Link to="/login"
+            <a href="#katalog"
               className="bg-[#5570F1] hover:bg-[#4460e0] text-white font-semibold px-7 py-3.5 rounded-2xl transition text-sm shadow-lg shadow-[#5570F1]/30"
               style={{ fontFamily: "Inter, sans-serif" }}>
               Cari Obat Sekarang
-            </Link>
-            <a href="#katalog"
+            </a>
+            <a href="#member"
               className="border border-gray-200 text-gray-600 hover:bg-gray-50 font-medium px-7 py-3.5 rounded-2xl transition text-sm"
               style={{ fontFamily: "Inter, sans-serif" }}>
-              Lihat Katalog
+              Daftar Member Gratis
             </a>
           </div>
 

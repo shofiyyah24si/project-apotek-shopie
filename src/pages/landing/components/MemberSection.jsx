@@ -47,7 +47,7 @@ export default function MemberSection() {
   };
 
   return (
-    <section className="bg-gradient-to-br from-[#5570F1] to-[#3a52d4] py-16 px-6">
+    <section id="member" className="bg-gradient-to-br from-[#5570F1] to-[#3a52d4] py-16 px-6">
       <div className="max-w-6xl mx-auto">
 
         {/* Header */}
