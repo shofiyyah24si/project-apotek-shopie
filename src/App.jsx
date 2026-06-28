@@ -24,6 +24,7 @@ const KomplainFeedback = React.lazy(() => import("./pages/member/KomplainFeedbac
 const Login    = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
 const Forgot   = React.lazy(() => import("./pages/auth/Forgot"));
+const LandingPage = React.lazy(() => import("./pages/landing/LandingPage"));
 
 // Proteksi: redirect ke /login jika belum login
 function PrivateRoute({ children }) {
@@ -56,7 +57,7 @@ function MemberRoute({ children }) {
 // Redirect root berdasarkan role
 function RootRedirect() {
   const raw = localStorage.getItem("user");
-  if (!raw) return <Navigate to="/login" replace />;
+  if (!raw) return <Navigate to="/home" replace />;
   const user = JSON.parse(raw);
   if (user.role === "admin") return <Navigate to="/dashboard" replace />;
   return <Navigate to="/member" replace />;
@@ -96,6 +97,9 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot"   element={<Forgot />} />
         </Route>
+
+        {/* Landing Page — public */}
+        <Route path="/home" element={<LandingPage />} />
 
       </Routes>
     </Suspense>
